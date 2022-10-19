@@ -1,0 +1,27 @@
+---
+title: "tidy_data.Rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+d <- readRDS("health_data.RData")
+```
+
+```{r}
+d$Category <- as.factor(d$Category)
+d$StateAbbr <- as.factor(d$StateAbbr)
+d$StateDesc <- as.factor(d$StateDesc)
+d$CountyName <- as.factor(d$CountyName)
+d$MeasureId <- as.factor(d$MeasureId)
+```
+
+```{r}
+d_outcome <- d[d$Category == "Health Outcomes", ]
+```
+
+
