@@ -3,19 +3,32 @@ library(leaflet)
 # Choices for drop-downs
 # "Name of outcome" = "var_name"
 vars <- c(
-  "Arthritis" = "var_name"
+  "Arthritis" = "Arthritis",
+  "BpHigh" = "BpHigh",
+  "Cancer" = "Cancer",
+  "Casthma" = "Casthma",
+  "CHD" = "CHD",
+  "COPD" = "COPD",
+  "Depression" = "Depression",
+  "Diabetes" = "Diabetes",
+  "HighChol" = "HighChol",
+  "Kidney" = "Kidney",
+  "Obesity" = "Obesity",
+  "Stroke" = "Stroke",
+  "TeethLost" = "TeethLost",
+  "Year" = "Year",
 )
 
-
+# Sets up navbar/title
 navbarPage("US Health Outcomes", id="nav",
            
-              tabPanel("Interactive map",
+              tabPanel("Interactive map", #first tab
                     div(class="outer",
                     # leafletOutput
-                    leafletOutput("map"),
+                    leafletOutput("map"), #set height to a number
               ),
            
-              tabPanel("Data explorer",
+              tabPanel("Data explorer", #second tab
               ),
             )
 )
@@ -24,17 +37,10 @@ navbarPage("US Health Outcomes", id="nav",
         draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
         width = 330, height = "auto",
 
-        h2("ZIP explorer"),
+        h2("Health explorer"),
 
-        selectInput("color", "Color", vars),
-        selectInput("size", "Size", vars, selected = "adultpop"),
-        conditionalPanel("input.color == 'superzip' || input.size == 'superzip'",
-          # Only prompt for threshold when coloring or sizing by superzip
-          numericInput("threshold", "SuperZIP threshold (top n percentile)", 5)
-        ),
-
-        plotOutput("histCentile", height = 200),
-        plotOutput("scatterCollegeIncome", height = 250)
+        selectInput("color", "Year", vars),
+        selectInput("size", "Outcome", vars, selected = "adultpop"),
       )
 
       
@@ -49,23 +55,8 @@ tabPanel("Data explorer",
            ),
            column(3,
                   conditionalPanel("input.states",
-                                   selectInput("cities", "Cities", c("All cities"=""), multiple=TRUE)
+                                   selectInput("counties", "Counties", c("All counties"=""), multiple=TRUE)
                   )
            ),
-           column(3,
-                  conditionalPanel("input.states",
-                                   selectInput("zipcodes", "Zipcodes", c("All zipcodes"=""), multiple=TRUE)
-                  )
-           )
-         ),
-         fluidRow(
-           column(1,
-                  numericInput("minScore", "Min score", min=0, max=100, value=0)
-           ),
-           column(1,
-                  numericInput("maxScore", "Max score", min=0, max=100, value=100)
-           )
-         ),
-         hr(),
-         DT::dataTableOutput("ziptable")
+        ),
 )
