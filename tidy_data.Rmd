@@ -44,3 +44,5 @@ d_outcome$Stroke <- ifelse(d_outcome$MeasureId == "STROKE", 1, 0)
 d_outcome$TeethLost <- ifelse(d_outcome$MeasureId == "TEETHLOST", 1, 0)
 ```
 
+
+
