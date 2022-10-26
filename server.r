@@ -4,7 +4,7 @@ library(scales)
 library(lattice)
 library(dplyr)
 
-d_outcomes
+d_outcome
 
 
 function(input, output, session) {
@@ -18,19 +18,20 @@ function(input, output, session) {
       setView(lng = -93.85, lat = 37.45, zoom = 4)
   })
   
+  # Don't need to return set of zips in bounds right now
   # A reactive expression that returns the set of zips that are
   # in bounds right now
-  zipsInBounds <- reactive({
-    if (is.null(input$map_bounds))
-      return(d_outcomes[FALSE,])
-    bounds <- input$map_bounds
-    latRng <- range(bounds$north, bounds$south)
-    lngRng <- range(bounds$east, bounds$west)
+ # zipsInBounds <- reactive({
+  #  if (is.null(input$map_bounds))
+   #   return(d_outcomes[FALSE,])
+  #  bounds <- input$map_bounds
+   # latRng <- range(bounds$north, bounds$south)
+  #  lngRng <- range(bounds$east, bounds$west)
     
-    subset(zipdata,
-           latitude >= latRng[1] & latitude <= latRng[2] &
-             longitude >= lngRng[1] & longitude <= lngRng[2])
-  })
+  #  subset(zipdata,
+  #        latitude >= latRng[1] & latitude <= latRng[2] &
+  #          longitude >= lngRng[1] & longitude <= lngRng[2])
+#  })
   
   ## Put our plots (Chloropleths?)
   
@@ -62,31 +63,30 @@ function(input, output, session) {
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
   
-# stop point 10/24
-  
+  # changing the color and size of the circles on top of the map
+  # (that show the prevalence of the health outcomes)
   observe({
     colorBy <- input$color
-    sizeBy <- input$size
+    sizeBy <- input$sizes
     
-    if (colorBy == "superzip") {
-      # Color and palette are treated specially in the "superzip" case, because
-      # the values are categorical instead of continuous.
-      colorData <- ifelse(zipdata$centile >= (100 - input$threshold), "yes", "no")
-      pal <- colorFactor("viridis", colorData)
-    } else {
-      colorData <- zipdata[[colorBy]]
+    if (colorBy == "Year") {
+      colorData <- d_outcomes[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
     
-    if (sizeBy == "superzip") {
-      # Radius is treated specially in the "superzip" case.
-      radius <- ifelse(zipdata$centile >= (100 - input$threshold), 30000, 3000)
+    if (sizeBy == "MeasureId") {
+      # Radius is treated specially in the "MeasureId" case because
+      # the values are categorical instead of continuous.
+      radius <- ifelse(d_outcome$Data_Value >= (100 - input$threshold), 30000, 3000)
     } else {
-      radius <- zipdata[[sizeBy]] / max(zipdata[[sizeBy]]) * 30000
+      radius <- d_outcome[[sizeBy]] / max(d_outcome[[sizeBy]]) * 30000
     }
     
-    leafletProxy("map", data = zipdata) %>%
+    # adds circles as markers on top of the existing map
+    leafletProxy("map", data = d_outcome) %>%
       clearShapes() %>%
+      # will need longitude/latitude or some sort of location marker here
+      # and may need to change zipcode to fips or the county
       addCircles(~longitude, ~latitude, radius=radius, layerId=~zipcode,
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
@@ -94,16 +94,16 @@ function(input, output, session) {
   })
   
   # Show a popup at the given location
-  showZipcodePopup <- function(zipcode, lat, lng) {
-    selectedZip <- allzips[allzips$zipcode == zipcode,]
+  showOutcomePopup <- function(zipcode, lat, lng) {  # may need to change lat and lng inputs
+    selectedOutcome <- allzips[allzips$zipcode == zipcode,]
+        # will need to change zipcode and allzips to d_outcome?
     content <- as.character(tagList(
-      tags$h4("Score:", as.integer(selectedZip$centile)),
-      tags$strong(HTML(sprintf("%s, %s %s",
-                               selectedZip$city.x, selectedZip$state.x, selectedZip$zipcode
+      tags$h4("Percent:", selectedOutcome$Data_Value),
+      tags$strong(HTML(sprintf("%s, %s",
+                               selectedOutcome$CountyName, selectedOutcome$StateAbbr
       ))), tags$br(),
-      sprintf("Median household income: %s", dollar(selectedZip$income * 1000)), tags$br(),
-      sprintf("Percent of adults with BA: %s%%", as.integer(selectedZip$college)), tags$br(),
-      sprintf("Adult population: %s", selectedZip$adultpop)
+      sprintf("Adult population: %s", selectedOutcome$TotalPopulation), tags$br(),
+      sprintf("Measure: %s", selectedOutcome$Measure),
     ))
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = zipcode)
   }
@@ -116,7 +116,7 @@ function(input, output, session) {
       return()
     
     isolate({
-      showZipcodePopup(event$id, event$lat, event$lng)
+      showOutcomePopup(event$id, event$lat, event$lng)
     })
   })
   
