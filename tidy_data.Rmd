@@ -46,6 +46,7 @@ d_outcome$TeethLost <- ifelse(d_outcome$MeasureId == "TEETHLOST", 1, 0)
 
 ```{r}
 # Clean the Geolocation column to only have the (longitutde, latitude) coordinates
+# take out the parentheses so they are only the numbers
 d_outcome$Geolocation <- gsub("POINT ", "", d_outcome$Geolocation)
 d_outcome$Geolocation <- gsub("\\(", "", d_outcome$Geolocation)
 d_outcome$Geolocation <- gsub("\\)", "", d_outcome$Geolocation)
@@ -55,8 +56,8 @@ l <- strsplit(d_outcome$Geolocation, " ", fixed = TRUE)
 
 # Create longitude and latitude columns on the d_outcome data frame
 # sapply what we get out of str_split
-d_outcome$longitude <- sapply(l, function(x) { x[1] } ) # for longitude
-d_outcome$latitude <- sapply(l, function(x) { x[2] } ) # for latitude
+d_outcome$longitude <- as.numeric( sapply(l, function(x) { x[1] } ) ) # for longitude
+d_outcome$latitude <- as.numeric( sapply(l, function(x) { x[2] } ) ) # for latitude
 ```
 
 
