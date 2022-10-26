@@ -103,7 +103,8 @@ function(input, output, session) {
                                selectedOutcome$CountyName, selectedOutcome$StateAbbr
       ))), tags$br(),
       sprintf("Adult population: %s", selectedOutcome$TotalPopulation), tags$br(),
-      sprintf("Measure: %s", selectedOutcome$Measure),
+      sprintf("Measure: %s", selectedOutcome$Measure), tags$br(),
+      sprintf("Data Source: %s", selectedOutcome$DataSource),
     ))
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = zipcode)
   }
