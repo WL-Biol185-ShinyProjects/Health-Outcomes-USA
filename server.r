@@ -37,17 +37,17 @@ function(input, output, session) {
     leafletProxy("map", data = d_outcome) %>%
       clearShapes() %>%
       # will need longitude/latitude or some sort of location marker here
-      # and may need to change zipcode to fips or the county
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~zipcode,
+      
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~county,
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
   })
   
   # Show a popup at the given location
-  showOutcomePopup <- function(zipcode, lat, lng) {  # may need to change lat and lng inputs
-    selectedOutcome <- allzips[allzips$zipcode == zipcode,]
-        # will need to change zipcode and allzips to d_outcome?
+  showOutcomePopup <- function(county, lat, lng) {  # may need to change lat and lng inputs
+    selectedOutcome <- d_outcome[d_outcome$county == county,]
+        
     content <- as.character(tagList(
       tags$h4("Percent:", selectedOutcome$Data_Value),
       tags$strong(HTML(sprintf("%s, %s",
@@ -57,7 +57,7 @@ function(input, output, session) {
       sprintf("Measure: %s", selectedOutcome$Measure), tags$br(),
       sprintf("Data Source: %s", selectedOutcome$DataSource),
     ))
-    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = zipcode)
+    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = county)
   }
   
   # When map is clicked, show a popup with city info
@@ -88,16 +88,16 @@ function(input, output, session) {
   })
   
   observe({
-    zipcodes <- if (is.null(input$states)) character(0) else {
+    counties <- if (is.null(input$states)) character(0) else {
       cleantable %>%
         filter(State %in% input$states,
                is.null(input$cities) | City %in% input$cities) %>%
-        `$`('Zipcode') %>%
+        `$`('County') %>%
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$zipcodes[input$zipcodes %in% zipcodes])
-    updateSelectizeInput(session, "zipcodes", choices = zipcodes,
+    stillSelected <- isolate(input$counties[input$counties %in% counties])
+    updateSelectizeInput(session, "counties", choices = counties,
                          selected = stillSelected, server = TRUE)
   })
   
@@ -108,10 +108,10 @@ function(input, output, session) {
       map <- leafletProxy("map")
       map %>% clearPopups()
       dist <- 0.5
-      zip <- input$goto$zip
+      zip <- input$goto$cnt #changed zip to cnt
       lat <- input$goto$lat
       lng <- input$goto$lng
-      showZipcodePopup(zip, lat, lng)
+      showCountyPopup(cnt, lat, lng)
       map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
     })
   })
