@@ -46,7 +46,7 @@ function(input, output, session) {
   })
   
   # Show a popup at the given location
-  showOutcomePopup <- function(county, lat, lng) {  # may need to change lat and lng inputs
+  showOutcomePopup <- function(county, latitude, longitude) {  # may need to change lat and lng inputs
     selectedOutcome <- d_outcome[d_outcome$county == county,]
         
     content <- as.character(tagList(
@@ -58,7 +58,7 @@ function(input, output, session) {
       sprintf("Measure: %s", selectedOutcome$Measure), tags$br(),
       sprintf("Data Source: %s", selectedOutcome$DataSource),
     ))
-    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = county)
+    leafletProxy("map") %>% addPopups(longitude, latitude, content, layerId = county)
   }
   
   # When map is clicked, show a popup with city info
@@ -69,7 +69,7 @@ function(input, output, session) {
       return()
     
     isolate({
-      showOutcomePopup(event$id, event$lat, event$lng)
+      showOutcomePopup(event$id, event$latitude, event$longitude)
     })
   })
   
@@ -109,9 +109,9 @@ function(input, output, session) {
       map <- leafletProxy("map")
       map %>% clearPopups()
       dist <- 0.5
-      zip <- input$goto$cnt #changed zip to cnt
-      lat <- input$goto$lat
-      lng <- input$goto$lng
+      cnt <- input$goto$county #changed zip to cnt
+      lat <- input$goto$latitude
+      lng <- input$goto$longitude
       showCountyPopup(cnt, lat, lng)
       map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
     })
