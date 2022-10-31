@@ -7,17 +7,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(tidyverse)
+```
 
 ```{r}
 d <- readRDS("health_data.RData")
 ```
 
 ```{r}
-d$Category <- as.factor(d$Category)
-d$StateAbbr <- as.factor(d$StateAbbr)
-d$StateDesc <- as.factor(d$StateDesc)
+d$Category   <- as.factor(d$Category)
+d$StateAbbr  <- as.factor(d$StateAbbr)
+d$StateDesc  <- as.factor(d$StateDesc)
 d$CountyName <- as.factor(d$CountyName)
-d$MeasureId <- as.factor(d$MeasureId)
+d$MeasureId  <- as.factor(d$MeasureId)
 ```
 
 ```{r}
@@ -29,19 +32,19 @@ table(d_outcome$MeasureId)
 ```
 
 ```{r}
-d_outcome$Arthritis <- ifelse(d_outcome$MeasureId == "ARTHRITIS", 1, 0)
-d_outcome$BpHigh <- ifelse(d_outcome$MeasureId == "BPHIGH", 1, 0)
-d_outcome$Cancer <- ifelse(d_outcome$MeasureId == "CANCER", 1, 0)
-d_outcome$Casthma <- ifelse(d_outcome$MeasureId == "CASTHMA", 1, 0)
-d_outcome$CHD <- ifelse(d_outcome$MeasureId == "CHD", 1, 0)
-d_outcome$COPD <- ifelse(d_outcome$MeasureId == "COPD", 1, 0)
+d_outcome$Arthritis  <- ifelse(d_outcome$MeasureId == "ARTHRITIS", 1, 0)
+d_outcome$BpHigh     <- ifelse(d_outcome$MeasureId == "BPHIGH", 1, 0)
+d_outcome$Cancer     <- ifelse(d_outcome$MeasureId == "CANCER", 1, 0)
+d_outcome$Casthma    <- ifelse(d_outcome$MeasureId == "CASTHMA", 1, 0)
+d_outcome$CHD        <- ifelse(d_outcome$MeasureId == "CHD", 1, 0)
+d_outcome$COPD       <- ifelse(d_outcome$MeasureId == "COPD", 1, 0)
 d_outcome$Depression <- ifelse(d_outcome$MeasureId == "DEPRESSION", 1, 0)
-d_outcome$Diabetes <- ifelse(d_outcome$MeasureId == "DIABETES", 1, 0)
-d_outcome$HighChol <- ifelse(d_outcome$MeasureId == "HIGHCHOL", 1, 0)
-d_outcome$Kidney <- ifelse(d_outcome$MeasureId == "KIDNEY", 1, 0)
-d_outcome$Obesity <- ifelse(d_outcome$MeasureId == "OBESITY", 1, 0)
-d_outcome$Stroke <- ifelse(d_outcome$MeasureId == "STROKE", 1, 0)
-d_outcome$TeethLost <- ifelse(d_outcome$MeasureId == "TEETHLOST", 1, 0)
+d_outcome$Diabetes   <- ifelse(d_outcome$MeasureId == "DIABETES", 1, 0)
+d_outcome$HighChol   <- ifelse(d_outcome$MeasureId == "HIGHCHOL", 1, 0)
+d_outcome$Kidney     <- ifelse(d_outcome$MeasureId == "KIDNEY", 1, 0)
+d_outcome$Obesity    <- ifelse(d_outcome$MeasureId == "OBESITY", 1, 0)
+d_outcome$Stroke     <- ifelse(d_outcome$MeasureId == "STROKE", 1, 0)
+d_outcome$TeethLost  <- ifelse(d_outcome$MeasureId == "TEETHLOST", 1, 0)
 ```
 
 ```{r}
@@ -57,7 +60,20 @@ l <- strsplit(d_outcome$Geolocation, " ", fixed = TRUE)
 # Create longitude and latitude columns on the d_outcome data frame
 # sapply what we get out of str_split
 d_outcome$longitude <- as.numeric( sapply(l, function(x) { x[1] } ) ) # for longitude
-d_outcome$latitude <- as.numeric( sapply(l, function(x) { x[2] } ) ) # for latitude
+d_outcome$latitude  <- as.numeric( sapply(l, function(x) { x[2] } ) ) # for latitude
+```
+
+
+```{r}
+d_clean <- d_outcome %>%
+  transmute('county'     = CountyName,
+            'latitude'   = latitude,
+            'longitude'  = longitude,
+            'state_abb'  = StateAbbr,
+            'state_name' = StateDesc,
+            'measure_id' = MeasureId,
+            'data_value' = Data_Value,
+            'year'       = Year)
 ```
 
 
