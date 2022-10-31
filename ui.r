@@ -39,7 +39,7 @@ navbarPage("US Health Outcomes", id="nav",
 
         h2("Health explorer"),
 
-        selectInput("color", "Year", vars),
+        selectInput("color", "year", vars),
         selectInput("size", "Outcome", vars, selected = "adultpop"),
       )
 
@@ -50,14 +50,14 @@ navbarPage("US Health Outcomes", id="nav",
 # making tab to select data exploration on top
 tabPanel("Data explorer",
          fluidRow(
-           column(3,
-                  selectInput("states", "States", c("All states"="", structure(state.abb, names=state.name), "Washington, DC"="DC"), multiple=TRUE)
+           column(2,
+                  selectInput("states", "States", c("All states"="", structure(state_abb, names=state_name), "Washington, DC"="DC"), multiple=TRUE)
            ),
-           column(3,
+           column(2,
                   conditionalPanel("input.states",
                                    selectInput("counties", "Counties", c("All counties"=""), multiple=TRUE)
                   )
            ),
         ),
-        
+
 )

@@ -5,7 +5,7 @@ library(lattice)
 library(dplyr)
 library(shiny)
 
-d_outcome
+d_clean
 
 
 function(input, output, session) {
@@ -27,15 +27,15 @@ function(input, output, session) {
     sizeBy <- input$sizes
     
    
-      colorData <- d_outcomes[[colorBy]]
+      colorData <- d_cleans[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     
     
-      radius <- d_outcome[[sizeBy]] / max(d_outcome[[sizeBy]]) * 30000
+      radius <- d_clean[[sizeBy]] / max(d_clean[[sizeBy]]) * 30000
     
     
     # adds circles as markers on top of the existing map
-    leafletProxy("map", data = d_outcome) %>%
+    leafletProxy("map", data = d_clean) %>%
       clearShapes() %>%
       # will need longitude/latitude or some sort of location marker here
       
@@ -47,7 +47,7 @@ function(input, output, session) {
   
   # Show a popup at the given location
   showOutcomePopup <- function(county, latitude, longitude) {  # may need to change lat and lng inputs
-    selectedOutcome <- d_outcome[d_outcome$county == county,]
+    selectedOutcome <- d_clean[d_clean$county == county,]
         
     content <- as.character(tagList(
       tags$h4("Percent:", selectedOutcome$Data_Value),
@@ -76,46 +76,19 @@ function(input, output, session) {
   
   ## Data Explorer ###########################################
   
-  observe({
-    cities <- if (is.null(input$states)) character(0) else {
-      filter(cleantable, State %in% input$states) %>%
-        `$`('City') %>%
-        unique() %>%
-        sort()
-    }
-    stillSelected <- isolate(input$cities[input$cities %in% cities])
-    updateSelectizeInput(session, "cities", choices = cities,
-                         selected = stillSelected, server = TRUE)
-  })
-  
-  observe({
-    counties <- if (is.null(input$states)) character(0) else {
-      cleantable %>%
-        filter(State %in% input$states,
-               is.null(input$cities) | City %in% input$cities) %>%
-        `$`('County') %>%
-        unique() %>%
-        sort()
-    }
-    stillSelected <- isolate(input$counties[input$counties %in% counties])
-    updateSelectizeInput(session, "counties", choices = counties,
-                         selected = stillSelected, server = TRUE)
-  })
-  
-  observe({
-    if (is.null(input$goto))
-      return()
-    isolate({
-      map <- leafletProxy("map")
-      map %>% clearPopups()
-      dist <- 0.5
-      cnt <- input$goto$county #changed zip to cnt
-      lat <- input$goto$latitude
-      lng <- input$goto$longitude
-      showCountyPopup(cnt, lat, lng)
-      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
+  function(input, output){
+    
+    observeEvent(input$states, {
+      d_clean$states <- states(100)
     })
-  })
-  
+    
+    observeEvent(input$counties, {
+      d_clean$county <- counties(100)
+    })  
+    
+    output$plot <- renderPlot({
+      
+    })
+  }
   
 }
