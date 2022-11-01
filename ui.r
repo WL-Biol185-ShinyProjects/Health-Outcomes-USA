@@ -29,16 +29,23 @@ navbarPage("US Health Outcomes", id="nav",
 
 # making tab to select data exploration on top
 tabPanel("Data explorer",
- #        fluidRow(
-  #         column(2,
-   #               selectInput("states", "States", c("All states"="", structure(state_abb, names=state_name), "Washington, DC"="DC"), multiple=TRUE)
-    #       ),
-     #      column(2,
-      #            conditionalPanel("input_states",
-       #                            selectInput("counties", "Counties", c("All counties"=""), multiple=TRUE)
-        #          )
-         #  ),
-  #      ),
+         fluidRow(
+           actionButton("arthritis", "Arthritis"),
+           actionButton("bp_high", "High Blood Pressure"), 
+           actionButton("cancer", "Cancer"),
+           actionButton("asthma", "Asthma"),
+           actionButton("chd", "CHD"),
+           actionButton("copd", "COPD"),
+           actionButton("depression", "Depression"),
+           actionButton("diabetes", "Diabetes"),
+           actionButton("high_chol", "High Cholesterol"),
+           actionButton("kidney", "Kidney"),
+           actionButton("Obesity", "Obesity"),
+           actionButton("Stroke", "Stroke"),
+           actionButton("TeethLost", "TeethLost"),
+           hr(),
+           plotOutput("plot")
+           ),
+        )
 
    )
-)
