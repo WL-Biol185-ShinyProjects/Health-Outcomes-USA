@@ -76,4 +76,22 @@ d_clean <- d_outcome %>%
             'year'       = Year)
 ```
 
-
+Taken from the ui.r:
+# Choices for drop-downs
+# "Name of outcome" = "var_name"
+vars <- c(
+  "Arthritis" = "Arthritis",
+  "BpHigh" = "BpHigh",
+  "Cancer" = "Cancer",
+  "Casthma" = "Casthma",
+  "CHD" = "CHD",
+  "COPD" = "COPD",
+  "Depression" = "Depression",
+  "Diabetes" = "Diabetes",
+  "HighChol" = "HighChol",
+  "Kidney" = "Kidney",
+  "Obesity" = "Obesity",
+  "Stroke" = "Stroke",
+  "TeethLost" = "TeethLost",
+  "Year" = "Year",
+)

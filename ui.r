@@ -1,23 +1,5 @@
 library(leaflet)
 
-# Choices for drop-downs
-# "Name of outcome" = "var_name"
-vars <- c(
-  "Arthritis" = "Arthritis",
-  "BpHigh" = "BpHigh",
-  "Cancer" = "Cancer",
-  "Casthma" = "Casthma",
-  "CHD" = "CHD",
-  "COPD" = "COPD",
-  "Depression" = "Depression",
-  "Diabetes" = "Diabetes",
-  "HighChol" = "HighChol",
-  "Kidney" = "Kidney",
-  "Obesity" = "Obesity",
-  "Stroke" = "Stroke",
-  "TeethLost" = "TeethLost",
-  "Year" = "Year",
-)
 
 # Sets up navbar/title
 navbarPage("US Health Outcomes", id="nav",
@@ -27,21 +9,19 @@ navbarPage("US Health Outcomes", id="nav",
                     # leafletOutput
                     leafletOutput("map"), #set height to a number
               ),
-           
-              tabPanel("Data explorer", #second tab
-              ),
-            )
-)
+
+            ),
+
 # Making dragable drop down to make exploration selections
-      absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-        draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-        width = 330, height = "auto",
+   #   absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+    #    draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
+     #   width = 330, height = "auto",
 
-        h2("Health explorer"),
+      #  h2("Health explorer"),
 
-        selectInput("color", "year", vars),
-        selectInput("size", "Outcome", vars, selected = "adultpop"),
-      )
+       # selectInput("color", "year", vars),
+    #    selectInput("size", "Outcome", vars, selected = "adultpop"),
+    #  ),
 
       
       
@@ -49,15 +29,16 @@ navbarPage("US Health Outcomes", id="nav",
 
 # making tab to select data exploration on top
 tabPanel("Data explorer",
-         fluidRow(
-           column(2,
-                  selectInput("states", "States", c("All states"="", structure(state_abb, names=state_name), "Washington, DC"="DC"), multiple=TRUE)
-           ),
-           column(2,
-                  conditionalPanel("input.states",
-                                   selectInput("counties", "Counties", c("All counties"=""), multiple=TRUE)
-                  )
-           ),
-        ),
+ #        fluidRow(
+  #         column(2,
+   #               selectInput("states", "States", c("All states"="", structure(state_abb, names=state_name), "Washington, DC"="DC"), multiple=TRUE)
+    #       ),
+     #      column(2,
+      #            conditionalPanel("input_states",
+       #                            selectInput("counties", "Counties", c("All counties"=""), multiple=TRUE)
+        #          )
+         #  ),
+  #      ),
 
+   )
 )
