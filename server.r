@@ -7,7 +7,6 @@ library(shiny)
 
 d_clean
 
-
 function(input, output, session) {
   
   ## Interactive Map ###########################################
@@ -81,7 +80,28 @@ function(input, output, session) {
   
   
   ## Data Explorer ###########################################
+  # Click the health outcome and display a graph showing counts of each outcome in each state.
   
+  v <- reactiveValues()
+  
+  observeEvent(input$arthritis, {
+        v$data_value <- d_clean$data_value # need to change this to filter only the arthritis data
+  })
+  
+  observeEvent(input$bp_high, {
+      v$data_value <- d_clean$data_value
+    
+  })  
+  
+  observeEvent(input$cancer, {
+      v$data_value <- d_clean$data_value
+  })
+  
+  
+  output$plot <- renderPlot({
+    if (is.null(v$data_value)) return()
+    hist(v$data_value)
+  })
 
-  
 }
+  
