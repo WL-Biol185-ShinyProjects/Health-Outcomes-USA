@@ -77,6 +77,8 @@ d_clean <- d_outcome %>%
 ```
 
 Taken from the ui.r:
+
+```{r}
 # Choices for drop-downs
 # "Name of outcome" = "var_name"
 vars <- c(
@@ -95,3 +97,11 @@ vars <- c(
   "TeethLost" = "TeethLost",
   "Year" = "Year",
 )
+```
+
+## NHGIS Tidying
+
+```{r}
+d_1 <- read.csv("nhgis0028_ds239_20185_county.csv")
+```
+
