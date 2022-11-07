@@ -95,7 +95,7 @@ vars <- c(
   "Obesity" = "Obesity",
   "Stroke" = "Stroke",
   "TeethLost" = "TeethLost",
-  "Year" = "Year",
+  "Year" = "Year"
 )
 ```
 
@@ -103,5 +103,68 @@ vars <- c(
 
 ```{r}
 d_1 <- read.csv("nhgis0028_ds239_20185_county.csv")
+```
+
+from codebook:
+AJWNE001:    Total
+AJWNE002:    White alone
+        AJWNE003:    Black or African American alone
+        AJWNE004:    American Indian and Alaska Native alone
+        AJWNE005:    Asian alone
+        AJWNE006:    Native Hawaiian and Other Pacific Islander alone
+        AJWNE007:    Some other race alone
+        AJWNE008:    Two or more races
+        
+school attainment:
+AJYPE001:    Total
+        AJYPE002:    No schooling completed
+        AJYPE003:    Nursery school
+        AJYPE004:    Kindergarten
+        AJYPE005:    1st grade
+        AJYPE006:    2nd grade
+        AJYPE007:    3rd grade
+        AJYPE008:    4th grade
+        AJYPE009:    5th grade
+        AJYPE010:    6th grade
+        AJYPE011:    7th grade
+        AJYPE012:    8th grade
+        AJYPE013:    9th grade
+        AJYPE014:    10th grade
+        AJYPE015:    11th grade
+        AJYPE016:    12th grade, no diploma
+        AJYPE017:    Regular high school diploma
+        AJYPE018:    GED or alternative credential
+        AJYPE019:    Some college, less than 1 year
+        AJYPE020:    Some college, 1 or more years, no degree
+        AJYPE021:    Associate's degree
+        AJYPE022:    Bachelor's degree
+        AJYPE023:    Master's degree
+        AJYPE024:    Professional school degree
+        AJYPE025:    Doctorate degree
+        
+median household income
+AJZAE001:    Median household income in the past 12 months (in 2018 inflation-adjusted dollars)
+
+
+```{r}
+#d_1 <- d_1 %>%
+ # transmute('county'     = COUNTY,
+            #'state_name' = STATE,
+            #'tot_pop'    = AJWNE001,
+            #'pct_white'  = AJWNE002 / AJWNE001,
+            #'pct_black'  = AJWNE003 / AJWNE001,
+            #'pct_native' = AJWNE004 / AJWNE001,
+            #'pct_ asian' = AJWNE005 / AJWNE001,
+            #'med_inc'    = AJZAE001,
+            #'higher_ed'  = (AJYPE017 + AJYPE018 + AJYPE019 + AJYPE020 +
+           #AJYPE021 + AJYPE022 + AJYPE023 + AJYPE024 + AJYPE025) / AJYPE001)
+```
+
+```{r}
+#d_new <- left_join(d_clean, d_1, by = c('county','state_name'))
+```
+
+```{r}
+
 ```
 
