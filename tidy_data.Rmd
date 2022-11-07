@@ -160,11 +160,33 @@ AJZAE001:    Median household income in the past 12 months (in 2018 inflation-ad
            #AJYPE021 + AJYPE022 + AJYPE023 + AJYPE024 + AJYPE025) / AJYPE001)
 ```
 
+
+
 ```{r}
-#d_new <- left_join(d_clean, d_1, by = c('county','state_name'))
+?gsub
+```
+
+gsub matches each occurance of the pattern
+
+```{r}
+#setdiff(d_1$county, d_clean$county)
 ```
 
 ```{r}
-
+d_1$county_name <- gsub("(\\sCounty|\\sCensus Area|\\sCity|\\sBorough|\\sMunicipality)$", "", d_1$county)
 ```
 
+setdiff()
+
+```{r}
+#setdiff(d_1$county_new, d_clean$county)
+```
+
+```{r}
+d_clean <- d_clean %>%
+  mutate('county_name' = county)
+```
+
+```{r}
+d_new <- left_join(d_clean, d_1, by = c('county_name','state_name'))
+```
