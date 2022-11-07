@@ -7,9 +7,12 @@ navbarPage("US Health Outcomes", id="nav",
               tabPanel("Interactive map", #first tab
                     div(class="outer",
                     # leafletOutput
+                    
+                    selectInput("color", "outcome", vars),
+                  
                     leafletOutput("map"), #set height to a number
               ),
-
+              
             ),
 
 # Making dragable drop down to make exploration selections
@@ -19,7 +22,7 @@ navbarPage("US Health Outcomes", id="nav",
 
       #  h2("Health explorer"),
 
-       # selectInput("color", "year", vars),
+      #  selectInput("color", "year", vars),
     #    selectInput("size", "Outcome", vars, selected = "adultpop"),
     #  ),
 
