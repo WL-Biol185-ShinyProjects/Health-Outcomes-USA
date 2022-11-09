@@ -6,6 +6,7 @@ library(dplyr)
 library(shiny)
 
 d_new
+d_circles <- d_new
 
 function(input, output, session) {
   
@@ -18,38 +19,48 @@ function(input, output, session) {
       setView(lng = -93.85, lat = 37.45, zoom = 4)
   })
 
-  observe({
-    leafletProxy("map") %>%
-      setView(lng = -93.85, lat = 37.45, zoom = 4)
+  renderPlot({
+    print(nrow(d_circles$measure_id))
+    d_circles %>% filter(measure_id == input$outcome)
     
+    print(nrow(d_circles$measure_id))
+    
+    leafletProxy("map", data = d_circles) %>%
+      clearShapes() %>%
+      addTiles() %>%
+      addCircles(~longitude, ~latitude, radius=10,
+                 stroke=FALSE, fillOpacity=0.4)
    })
   
 
   
+    
+  
   # changing the color and size of the circles on top of the map
   # (that show the prevalence of the health outcomes)
-  observe({
-    colorBy <- input$color
+ # observe({
+  #  colorBy <- input$color
   
   #  sizeBy <- input$sizes
     
    
-      colorData <- d_new[[colorBy]]
-      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
+  #    colorData <- d_new[[colorBy]]
+   #   pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     
     
      # radius <- d_new[[sizeBy]] / max(d_new[[sizeBy]]) * 30000
     
     
     # adds circles as markers on top of the existing map
-    leafletProxy("map", data = d_new) %>%
-      clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=1, 
-                 stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData))
+   # leafletProxy("map", data = d_new) %>%
+    #  clearShapes() %>%
+     # addTiles() %>%
+    #  addCircles(~longitude, ~latitude, radius=3000,
+           #      stroke=FALSE, fillOpacity=0.4)
     # %>%
     #  addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
      #           layerId="colorLegend")
-  })
+#  })
   # layerId=~county,
   
   # Show a popup at the given location
@@ -84,26 +95,7 @@ function(input, output, session) {
   ## Data Explorer ###########################################
   # Click the health outcome and display a graph showing counts of each outcome in each state.
   
-  v <- reactiveValues()
-  
-  observeEvent(input$arthritis, {
-        v$data_value <- d_new$data_value # need to change this to filter only the arthritis data
-  })
-  
-  observeEvent(input$bp_high, {
-      v$data_value <- d_new$data_value
-    
-  })  
-  
-  observeEvent(input$cancer, {
-      v$data_value <- d_new$data_value
-  })
-  
-  
-  output$plot <- renderPlot({
-    if (is.null(v$data_value)) return()
-    hist(v$data_value)
-  })
+
 
 }
   

@@ -8,9 +8,10 @@ navbarPage("US Health Outcomes", id="nav",
                     div(class="outer",
                     # leafletOutput
                     
-                    selectInput("outcome", "Outcome", vars),
+                    selectInput("outcome", "Outcome", outcomes),
                   
                     leafletOutput("map"), #set height to a number
+
               ),
               
             ),
@@ -37,7 +38,7 @@ tabPanel("Interactive Map",
 
 # making tab to select data exploration on top
 tabPanel("Data explorer",
-         selectInput("outcome", "Outcome", vars),
+         selectInput("outcome", "Outcome", outcomes),
          selectInput("predictor", "Socioeconomic Predictor", predictors),
          plotOutput("plot"),
         )
