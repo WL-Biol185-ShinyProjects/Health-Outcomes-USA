@@ -8,7 +8,7 @@ navbarPage("US Health Outcomes", id="nav",
                     div(class="outer",
                     # leafletOutput
                     
-                    selectInput("color", "outcome", vars),
+                    selectInput("outcome", "Outcome", vars),
                   
                     leafletOutput("map"), #set height to a number
               ),
@@ -27,28 +27,19 @@ navbarPage("US Health Outcomes", id="nav",
     #  ),
 
       
-      
-    
+tabPanel("Interactive Map",
+         selectInput("state", "State", states),
+         selectInput("outcome", "Outcome", outcomes),
+         selectInput("predictor", "Socioeconomic Predictor", predictors),
+         leafletOutput("state_outcome"),
+         leafletOutput("state_predictor"),
+         ),
 
 # making tab to select data exploration on top
 tabPanel("Data explorer",
-         fluidRow(
-           actionButton("arthritis", "Arthritis"),
-           actionButton("bp_high", "High Blood Pressure"), 
-           actionButton("cancer", "Cancer"),
-           actionButton("asthma", "Asthma"),
-           actionButton("chd", "CHD"),
-           actionButton("copd", "COPD"),
-           actionButton("depression", "Depression"),
-           actionButton("diabetes", "Diabetes"),
-           actionButton("high_chol", "High Cholesterol"),
-           actionButton("kidney", "Kidney"),
-           actionButton("Obesity", "Obesity"),
-           actionButton("Stroke", "Stroke"),
-           actionButton("TeethLost", "TeethLost"),
-           hr(),
-           plotOutput("plot")
-           ),
+         selectInput("outcome", "Outcome", vars),
+         selectInput("predictor", "Socioeconomic Predictor", predictors),
+         plotOutput("plot"),
         )
 
    )
