@@ -135,7 +135,8 @@ d_1 <- d_1 %>%
             'pct_ asian' = AJWNE005 / AJWNE001,
             'med_inc'    = AJZAE001,
             'higher_ed'  = (AJYPE017 + AJYPE018 + AJYPE019 + AJYPE020 +
-           AJYPE021 + AJYPE022 + AJYPE023 + AJYPE024 + AJYPE025) / AJYPE001)
+           AJYPE021 + AJYPE022 + AJYPE023 + AJYPE024 + AJYPE025) / AJYPE001,
+           'county_fips' = CountyFIPS)
 ```
 
 
@@ -249,12 +250,12 @@ states <- c(
 )
 
 predictors <- c(
-  'median income' = 'med_inc',
+  'median income'         = 'med_inc',
   'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed',
-  'pct population white' = 'pct_white',
-  'pct population black' = 'pct_black',
+  'pct population white'  = 'pct_white',
+  'pct population black'  = 'pct_black',
   'pct population native' = 'pct_native',
-  'pct population asian' = 'pct_asain'
+  'pct population asian'  = 'pct_asain'
     
 )
 ```
