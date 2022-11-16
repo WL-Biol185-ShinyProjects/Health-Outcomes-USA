@@ -14,24 +14,36 @@ function(input, output, session) {
   
   # Create the map
   output$map <- renderLeaflet({
-    leaflet() %>%
+    leaflet("map", d_circles) %>%
       addTiles() %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4)
   })
-
-  renderPlot({
-    print(nrow(d_circles$measure_id))
-    d_circles %>% filter(measure_id == input$outcome)
+  
+  #output$circles <- renderPlot({
+  observe({
+    input <- tolower(input$outcome)
     
-    print(nrow(d_circles$measure_id))
+   # print(input)
+    
+   # print(nrow(d_circles["measure_id_char"]))
+    
+    d_circles <- d_circles %>% 
+      filter(d_circles["measure_id_char"] == input)
+
+    
+  #  print(nrow(d_circles["measure_id_char"]))
+   # print(d_circles[1:10, "measure_id_char"])
     
     leafletProxy("map", data = d_circles) %>%
       clearShapes() %>%
       addTiles() %>%
-      addCircles(~longitude, ~latitude, radius=10,
-                 stroke=FALSE, fillOpacity=0.4)
+      addCircles(lng = ~longitude, 
+                 lat = ~latitude, 
+                 stroke=FALSE, 
+                 fillOpacity=0.4)
    })
   
+
 
   
     
