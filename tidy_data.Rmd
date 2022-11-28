@@ -139,11 +139,6 @@ d_1 <- d_1 %>%
 ```
 
 
-
-```{r}
-?gsub
-```
-
 gsub matches each occurance of the pattern
 
 ```{r}
@@ -261,6 +256,8 @@ predictors <- c(
 
 ```{r}
 d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
-class(d_new$measure_id_char)
+#class(d_new$measure_id_char)
 ```
 
+write.csv to write out to csv files
+read.csv in server or ui to load them
