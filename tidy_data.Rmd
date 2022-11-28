@@ -254,8 +254,13 @@ predictors <- c(
   'pct population white' = 'pct_white',
   'pct population black' = 'pct_black',
   'pct population native' = 'pct_native',
-  'pct population asian' = 'pct_asain'
+  'pct population asian' = 'pct_asian'
     
 )
+```
+
+```{r}
+d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
+class(d_new$measure_id_char)
 ```
 
