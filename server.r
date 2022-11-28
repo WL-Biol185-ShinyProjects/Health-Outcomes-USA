@@ -41,67 +41,39 @@ function(input, output, session) {
                  lat = ~latitude, 
                  stroke=FALSE, 
                  fillOpacity=0.4)
-   })
+    })
   
-
-
-  
+  #  showOutcomePopup <- function(county, latitude, longitude) {
+   # input <- tolower(input$outcome)
+    #d_popup <- d_popup %>% 
+     # filter(d_circles["measure_id_char"] == input)
     
-  
-  # changing the color and size of the circles on top of the map
-  # (that show the prevalence of the health outcomes)
- # observe({
-  #  colorBy <- input$color
-  
-  #  sizeBy <- input$sizes
-    
-   
-  #    colorData <- d_new[[colorBy]]
-   #   pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
-    
-    
-     # radius <- d_new[[sizeBy]] / max(d_new[[sizeBy]]) * 30000
-    
-    
-    # adds circles as markers on top of the existing map
-   # leafletProxy("map", data = d_new) %>%
-    #  clearShapes() %>%
-     # addTiles() %>%
-    #  addCircles(~longitude, ~latitude, radius=3000,
-           #      stroke=FALSE, fillOpacity=0.4)
-    # %>%
-    #  addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
-     #           layerId="colorLegend")
-#  })
-  # layerId=~county,
-  
-  # Show a popup at the given location
-#  showOutcomePopup <- function(county, latitude, longitude) {  # may need to change lat and lng inputs
- #   selectedOutcome <- d_new[d_new$county == county,]
-        
 #    content <- as.character(tagList(
- #     tags$h4("Percent:", selectedOutcome$Data_Value),
+ #     tags$h4("Percent:", d_popup$data_value),
   #    tags$strong(HTML(sprintf("%s, %s",
-    #                           selectedOutcome$CountyName, selectedOutcome$StateAbbr
-   #   ))), tags$br(),
-#      sprintf("Adult population: %s", selectedOutcome$TotalPopulation), tags$br(),
- #     sprintf("Measure: %s", selectedOutcome$Measure), tags$br(),
-  #    sprintf("Data Source: %s", selectedOutcome$DataSource),
-   # ))
-#    leafletProxy("map") %>% addPopups(longitude, latitude, content, layerId = county)
- # }
-  
-  # When map is clicked, show a popup with city info
- # observe({
-  #  leafletProxy("map") %>% clearPopups()
-   # event <- input$map_shape_click
-#    if (is.null(event))
- #     return()
+   #                            d_popup$county_name, d_popup$state_abb
+    #  ))), tags$br(),
+     # sprintf("Adult population: %s", d_popup$tot_pop), tags$br(),
+      #sprintf("Year: %s", d_popup$year), tags$br(),
+      #sprintf("Data Source: %s", d_circles$DataSource),
+  #  ))
+   # leafletProxy("map", data = d_popup) %>%
+    #addPopups(longitude, latitude, content, layerId = county)
+    #}
     
-  #  isolate({
-   #   showOutcomePopup(event$id, event$latitude, event$longitude)
-#    })
- # })
+  #  observe({
+   #   leafletProxy("map") %>% clearPopups()
+    #  event <- input$map_shape_click
+     # if (is.null(event))
+      #  return()
+      
+  #    isolate({
+   #     showOutcomePopup(event$id, event$lat, event$lng)
+    #  })
+  #  })
+    
+    
+  
   
   
   ## Data Explorer ###########################################
