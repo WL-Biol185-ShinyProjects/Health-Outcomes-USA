@@ -5,8 +5,8 @@ library(lattice)
 library(dplyr)
 library(shiny)
 
-d_new
-d_circles <- d_new
+df <- read.csv("d_new.csv")
+d_circles <- df
 
 function(input, output, session) {
   
@@ -23,16 +23,16 @@ function(input, output, session) {
   observe({
     input <- tolower(input$outcome)
     
-   # print(input)
+    # print(input)
     
-   # print(nrow(d_circles["measure_id_char"]))
+    # print(nrow(d_circles["measure_id_char"]))
     
     d_circles <- d_circles %>% 
       filter(d_circles["measure_id_char"] == input)
-
     
-  #  print(nrow(d_circles["measure_id_char"]))
-   # print(d_circles[1:10, "measure_id_char"])
+    
+    #  print(nrow(d_circles["measure_id_char"]))
+    # print(d_circles[1:10, "measure_id_char"])
     
     leafletProxy("map", data = d_circles) %>%
       clearShapes() %>%
@@ -41,24 +41,24 @@ function(input, output, session) {
                  lat = ~latitude, 
                  stroke=FALSE, 
                  fillOpacity=0.4)
-    })
+  })
   
   #  showOutcomePopup <- function(county, latitude, longitude) {
    # input <- tolower(input$outcome)
     #d_popup <- d_popup %>% 
-     # filter(d_circles["measure_id_char"] == input)
+  #  filter(d_circles["measure_id_char"] == input)
     
-#    content <- as.character(tagList(
- #     tags$h4("Percent:", d_popup$data_value),
-  #    tags$strong(HTML(sprintf("%s, %s",
-   #                            d_popup$county_name, d_popup$state_abb
+   # content <- as.character(tagList(
+    #  tags$h4("Percent:", d_popup$data_value),
+     # tags$strong(HTML(sprintf("%s, %s",
+      #                         d_popup$county_name, d_popup$state_abb
     #  ))), tags$br(),
      # sprintf("Adult population: %s", d_popup$tot_pop), tags$br(),
-      #sprintf("Year: %s", d_popup$year), tags$br(),
-      #sprintf("Data Source: %s", d_circles$DataSource),
-  #  ))
-   # leafletProxy("map", data = d_popup) %>%
-    #addPopups(longitude, latitude, content, layerId = county)
+    #  sprintf("Year: %s", d_popup$year), tags$br(),
+     # sprintf("Data Source: %s", d_circles$DataSource),
+    #))
+  #  leafletProxy("map", data = d_popup) %>%
+   # addPopups(longitude, latitude, content, layerId = county)
     #}
     
   #  observe({
@@ -67,10 +67,10 @@ function(input, output, session) {
      # if (is.null(event))
       #  return()
       
-  #    isolate({
-   #     showOutcomePopup(event$id, event$lat, event$lng)
-    #  })
-  #  })
+    #  isolate({
+     #   showOutcomePopup(event$lat, event$lng)
+      #})
+   # })
     
     
   
