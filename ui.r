@@ -83,6 +83,11 @@ predictors <- c(
 # Sets up navbar/title
 navbarPage("US Health Outcomes", id="nav",
            
+           tabPanel("Welcome",
+                    div(class = "outer"),
+                    "Welcome to the US Health Outcomes Explorer!",
+                    ),
+           
            tabPanel("Interactive US map", #first tab
                     div(class="outer",
                     
@@ -94,13 +99,13 @@ navbarPage("US Health Outcomes", id="nav",
               
             ),
 
-tabPanel("Interactive State Map",
-         selectInput("state", "State", states),
-         selectInput("outcome", "Outcome", outcomes),
-         selectInput("predictor", "Socioeconomic Predictor", predictors),
-         leafletOutput("state_outcome"),
-         leafletOutput("state_predictor"),
-         ),
+           tabPanel("Interactive State Map",
+                    selectInput("state", "State", states),
+                    selectInput("outcome", "Outcome", outcomes),
+                    selectInput("predictor", "Socioeconomic Predictor", predictors),
+                    leafletOutput("state_outcome"),
+                    leafletOutput("state_predictor"),
+            ),
 
 # making tab to select data exploration on top
 tabPanel("Data explorer",
