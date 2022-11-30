@@ -171,18 +171,10 @@ table(d_new$state_name)
 
 ```{r}
 d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
-#class(d_new$measure_id_char)
 ```
-
-write.csv to write out to csv files
-read.csv in server or ui to load them
 
 ```{r}
 write.csv(d_new, file = "d_new.csv")
-```
-
-```{r}
-saveRDS(d_new, "d_new.RData")
 ```
 
 
