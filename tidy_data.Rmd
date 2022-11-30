@@ -172,4 +172,8 @@ table(d_new$state_name)
 
 
 
+```{r}
+saveRDS(d_new, "d_new.RData")
+```
+
 
