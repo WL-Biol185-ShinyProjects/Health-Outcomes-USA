@@ -1,6 +1,8 @@
 ---
 title: "tidy_data.Rmd"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -135,8 +137,7 @@ d_1 <- d_1 %>%
             'pct_ asian' = AJWNE005 / AJWNE001,
             'med_inc'    = AJZAE001,
             'higher_ed'  = (AJYPE017 + AJYPE018 + AJYPE019 + AJYPE020 +
-           AJYPE021 + AJYPE022 + AJYPE023 + AJYPE024 + AJYPE025) / AJYPE001,
-           'county_fips' = CountyFIPS)
+           AJYPE021 + AJYPE022 + AJYPE023 + AJYPE024 + AJYPE025) / AJYPE001)
 ```
 
 
@@ -170,6 +171,13 @@ table(d_new$state_name)
 ```
 
 
+```{r}
+d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
+```
+
+```{r}
+write.csv(d_new, file = "d_new.csv")
+```
 
 
 ```{r}
