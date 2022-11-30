@@ -140,11 +140,6 @@ d_1 <- d_1 %>%
 ```
 
 
-
-```{r}
-?gsub
-```
-
 gsub matches each occurance of the pattern
 
 ```{r}
@@ -174,89 +169,6 @@ d_new <- left_join(d_clean, d_1, by = c('county_name','state_name'))
 table(d_new$state_name)
 ```
 
-Taken from the ui.r:
 
-```{r}
-# Choices for drop-downs
-# "Name of outcome" = "var_name"
-outcomes <- c(
-  "Arthritis" = "Arthritis",
-  "BpHigh" = "BpHigh",
-  "Cancer" = "Cancer",
-  "Casthma" = "Casthma",
-  "CHD" = "CHD",
-  "COPD" = "COPD",
-  "Depression" = "Depression",
-  "Diabetes" = "Diabetes",
-  "HighChol" = "HighChol",
-  "Kidney" = "Kidney",
-  "Obesity" = "Obesity",
-  "Stroke" = "Stroke",
-  "TeethLost" = "TeethLost"
-)
 
-states <- c(
-  'Alabama',
-  'Alaska',
-  'Arizona',
-  'Arkansas',
-  'California',
-  'Colorado',
-  'Connecticut',
-  'Delaware',
-  'District of Columbia',
-  'Florida',
-  'Georgia',
-  'Hawaii',
-  'Idaho',
-  'Illinois',
-  'Indiana',
-  'Iowa',
-  'Kansas',
-  'Kentucky',
-  'Louisiana',
-  'Maine',
-  'Maryland',
-  'Massachusetts',
-  'Michigan',
-  'Minnesota',
-  'Mississippi',
-  'Missouri',
-  'Montana',
-  'Nebraska',
-  'Nevada',
-  'New Hampshire',
-  'New Jersey',
-  'New Mexico',
-  'New York',
-  'North Carolina',
-  'North Dakota',
-  'Ohio',
-  'Oklahoma',
-  'Oregon',
-  'Pennsylvania',
-  'Rhode Island',
-  'South Carolina',
-  'South Dakota',
-  'Tennessee',
-  'Texas',
-  'Utah',
-  'Vermont',
-  'Virginia',
-  'Washington',
-  'West Virginia',
-  'Wisconsin',
-  'Wyoming'
-)
-
-predictors <- c(
-  'median income'         = 'med_inc',
-  'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed',
-  'pct population white'  = 'pct_white',
-  'pct population black'  = 'pct_black',
-  'pct population native' = 'pct_native',
-  'pct population asian'  = 'pct_asain'
-    
-)
-```
 

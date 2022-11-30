@@ -5,8 +5,8 @@ library(lattice)
 library(dplyr)
 library(shiny)
 
-d_new
-d_circles <- d_new
+df <- read.csv("d_new.csv")
+d_circles <- df
 
 function(input, output, session) {
   
@@ -14,82 +14,66 @@ function(input, output, session) {
   
   # Create the map
   output$map <- renderLeaflet({
-    leaflet() %>%
+    leaflet("map", d_circles) %>%
       addTiles() %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4)
   })
-
-  renderPlot({
-    print(nrow(d_circles$measure_id))
-    d_circles %>% filter(measure_id == input$outcome)
+  
+  #output$circles <- renderPlot({
+  observe({
+    input <- tolower(input$outcome)
     
-    print(nrow(d_circles$measure_id))
+    # print(input)
+    
+    # print(nrow(d_circles["measure_id_char"]))
+    
+    d_circles <- d_circles %>% 
+      filter(d_circles["measure_id_char"] == input)
+    
+    
+    #  print(nrow(d_circles["measure_id_char"]))
+    # print(d_circles[1:10, "measure_id_char"])
     
     leafletProxy("map", data = d_circles) %>%
       clearShapes() %>%
       addTiles() %>%
-      addCircles(~longitude, ~latitude, radius=10,
-                 stroke=FALSE, fillOpacity=0.4)
-   })
+      addCircles(lng = ~longitude, 
+                 lat = ~latitude, 
+                 stroke=FALSE, 
+                 fillOpacity=0.4)
+  })
   
-
-  
+  #  showOutcomePopup <- function(county, latitude, longitude) {
+   # input <- tolower(input$outcome)
+    #d_popup <- d_popup %>% 
+  #  filter(d_circles["measure_id_char"] == input)
+    
+   # content <- as.character(tagList(
+    #  tags$h4("Percent:", d_popup$data_value),
+     # tags$strong(HTML(sprintf("%s, %s",
+      #                         d_popup$county_name, d_popup$state_abb
+    #  ))), tags$br(),
+     # sprintf("Adult population: %s", d_popup$tot_pop), tags$br(),
+    #  sprintf("Year: %s", d_popup$year), tags$br(),
+     # sprintf("Data Source: %s", d_circles$DataSource),
+    #))
+  #  leafletProxy("map", data = d_popup) %>%
+   # addPopups(longitude, latitude, content, layerId = county)
+    #}
+    
+  #  observe({
+   #   leafletProxy("map") %>% clearPopups()
+    #  event <- input$map_shape_click
+     # if (is.null(event))
+      #  return()
+      
+    #  isolate({
+     #   showOutcomePopup(event$lat, event$lng)
+      #})
+   # })
+    
     
   
-  # changing the color and size of the circles on top of the map
-  # (that show the prevalence of the health outcomes)
- # observe({
-  #  colorBy <- input$color
-  
-  #  sizeBy <- input$sizes
-    
-   
-  #    colorData <- d_new[[colorBy]]
-   #   pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
-    
-    
-     # radius <- d_new[[sizeBy]] / max(d_new[[sizeBy]]) * 30000
-    
-    
-    # adds circles as markers on top of the existing map
-   # leafletProxy("map", data = d_new) %>%
-    #  clearShapes() %>%
-     # addTiles() %>%
-    #  addCircles(~longitude, ~latitude, radius=3000,
-           #      stroke=FALSE, fillOpacity=0.4)
-    # %>%
-    #  addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
-     #           layerId="colorLegend")
-#  })
-  # layerId=~county,
-  
-  # Show a popup at the given location
-#  showOutcomePopup <- function(county, latitude, longitude) {  # may need to change lat and lng inputs
- #   selectedOutcome <- d_new[d_new$county == county,]
-        
-#    content <- as.character(tagList(
- #     tags$h4("Percent:", selectedOutcome$Data_Value),
-  #    tags$strong(HTML(sprintf("%s, %s",
-    #                           selectedOutcome$CountyName, selectedOutcome$StateAbbr
-   #   ))), tags$br(),
-#      sprintf("Adult population: %s", selectedOutcome$TotalPopulation), tags$br(),
- #     sprintf("Measure: %s", selectedOutcome$Measure), tags$br(),
-  #    sprintf("Data Source: %s", selectedOutcome$DataSource),
-   # ))
-#    leafletProxy("map") %>% addPopups(longitude, latitude, content, layerId = county)
- # }
-  
-  # When map is clicked, show a popup with city info
- # observe({
-  #  leafletProxy("map") %>% clearPopups()
-   # event <- input$map_shape_click
-#    if (is.null(event))
- #     return()
-    
-  #  isolate({
-   #   showOutcomePopup(event$id, event$latitude, event$longitude)
-#    })
- # })
   
   
   ## Data Explorer ###########################################
