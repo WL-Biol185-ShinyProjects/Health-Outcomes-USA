@@ -181,4 +181,8 @@ read.csv in server or ui to load them
 write.csv(d_new, file = "d_new.csv")
 ```
 
+```{r}
+saveRDS(d_new, "d_new.RData")
+```
+
 
