@@ -179,9 +179,12 @@ d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
 write.csv(d_new, file = "d_new.csv")
 ```
 
+<<<<<<< HEAD
 
 ```{r}
 saveRDS(d_new, "d_new.RData")
 ```
 
+=======
+>>>>>>> e8577f141f63daf298e939c8012d0ec5b926c66a
 
