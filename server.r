@@ -43,34 +43,48 @@ function(input, output, session) {
                  fillOpacity=0.4)
   })
   
-  #  showOutcomePopup <- function(county, latitude, longitude) {
-   # input <- tolower(input$outcome)
-    #d_popup <- d_popup %>% 
-  #  filter(d_circles["measure_id_char"] == input)
-    
-   # content <- as.character(tagList(
-    #  tags$h4("Percent:", d_popup$data_value),
+  showOutcomePopup <- function(latitude, longitude) {
+     input <- tolower(input$outcome)
+    d_popup <- df %>% 
+      filter(df["measure_id_char"] == input)
+
+     content <- as.character(tagList(
+      tags$h4("Percent:", d_popup$data_value),
      # tags$strong(HTML(sprintf("%s, %s",
-      #                         d_popup$county_name, d_popup$state_abb
-    #  ))), tags$br(),
-     # sprintf("Adult population: %s", d_popup$tot_pop), tags$br(),
-    #  sprintf("Year: %s", d_popup$year), tags$br(),
-     # sprintf("Data Source: %s", d_circles$DataSource),
-    #))
-  #  leafletProxy("map", data = d_popup) %>%
-   # addPopups(longitude, latitude, content, layerId = county)
-    #}
+      #          d_popup$county_name, d_popup$state_abb
+    #  ))),
+     # tags$br(),
+      #sprintf("Adult population: %s", d_popup$tot_pop), tags$br(),
+      #sprintf("Year: %s", d_popup$year), tags$br(),
+      #sprintf("Data Source: %s", d_circles$DataSource),
+     ))
     
-  #  observe({
-   #   leafletProxy("map") %>% clearPopups()
-    #  event <- input$map_shape_click
-     # if (is.null(event))
-      #  return()
+    #content <- "map"
+    leafletProxy("map", data = d_popup) %>%
+      addPopups(longitude, latitude, content)
+  }
+
+  observeEvent(input$map_shape_click, {
+    
+    click <- input$map_shape_click
+    if(is.null(click)){
+      return()
+    }
+    isolate({
+      showOutcomePopup(click$lat, click$lng)
+    })
+  })
+    
+   # observe({
+     # leafletProxy("map") %>% clearPopups()
+      #event <- input$map_shape_click
+    #  if (is.null(event))
+     #   return()
       
     #  isolate({
      #   showOutcomePopup(event$lat, event$lng)
       #})
-   # })
+  #  })
     
     
   
