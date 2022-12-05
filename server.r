@@ -43,6 +43,14 @@ function(input, output, session) {
                  fillOpacity=0.4)
   })
   
+  output$state_predictor <- renderLeaflet({
+    leaflet("state_predictor", df) %>%
+      addTiles() %>%
+      setView(lng = -93.85, lat = 37.45, zoom = 4)
+      
+  })
+  
+  
   #  showOutcomePopup <- function(county, latitude, longitude) {
    # input <- tolower(input$outcome)
     #d_popup <- d_popup %>% 
