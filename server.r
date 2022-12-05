@@ -43,6 +43,7 @@ function(input, output, session) {
                  fillOpacity=0.4)
   })
   
+
   showOutcomePopup <- function(latitude, longitude) {
      input <- tolower(input$outcome)
     d_popup <- df %>% 
@@ -50,6 +51,17 @@ function(input, output, session) {
 
      content <- as.character(tagList(
       tags$h4("Percent:", d_popup$data_value),
+
+  
+  
+  #  showOutcomePopup <- function(county, latitude, longitude) {
+   # input <- tolower(input$outcome)
+    #d_popup <- d_popup %>% 
+  #  filter(d_circles["measure_id_char"] == input)
+    
+   # content <- as.character(tagList(
+    #  tags$h4("Percent:", d_popup$data_value),
+
      # tags$strong(HTML(sprintf("%s, %s",
       #          d_popup$county_name, d_popup$state_abb
     #  ))),
@@ -87,7 +99,12 @@ function(input, output, session) {
   #  })
     
     
-  
+  output$state_predictor <- renderLeaflet({
+    leaflet("state_predictor", df) %>%
+      addTiles() %>%
+      setView(lng = -93.85, lat = 37.45, zoom = 4)
+    
+  })
   
   
   ## Data Explorer ###########################################
