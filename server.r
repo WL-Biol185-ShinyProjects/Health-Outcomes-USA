@@ -4,6 +4,7 @@ library(scales)
 library(lattice)
 library(dplyr)
 library(shiny)
+library(tidyverse)
 
 df <- read.csv("d_new.csv")
 d_circles <- df
@@ -96,6 +97,7 @@ function(input, output, session) {
     #  isolate({
      #   showOutcomePopup(event$lat, event$lng)
       #})
+
   #  })
     
     
@@ -105,12 +107,26 @@ function(input, output, session) {
       setView(lng = -93.85, lat = 37.45, zoom = 4)
     
   })
-  
-  
+
+   # })
   ## Data Explorer ###########################################
   # Click the health outcome and display a graph showing counts of each outcome in each state.
+  output$plot <- renderPlot({
+    df <- df %>%
+    ggplot(aes(input$predictors, input$outcomes)) + 
+      geom_point()
+  })
+  
+}
+
+
+  
+  
+>>>>>>> 465165d70d7c9f557742cd610a337f708102cc98
+  
+  
   
 
 
-}
+
   
