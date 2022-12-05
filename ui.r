@@ -101,9 +101,7 @@ navbarPage("US Health Outcomes", id="nav",
 
            tabPanel("Interactive State Map",
                     selectInput("state", "State", states),
-                    selectInput("outcome", "Outcome", outcomes),
                     selectInput("predictor", "Socioeconomic Predictor", predictors),
-                    leafletOutput("state_outcome"),
                     leafletOutput("state_predictor"),
             ),
 
