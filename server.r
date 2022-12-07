@@ -25,14 +25,13 @@ function(input, output, session) {
     input <- tolower(input$outcome)
     
     # print(input)
-    
     # print(nrow(d_circles["measure_id_char"]))
     
     d_circles <- d_circles %>% 
       filter(d_circles["measure_id_char"] == input)
     
     
-    #  print(nrow(d_circles["measure_id_char"]))
+    # print(nrow(d_circles["measure_id_char"]))
     # print(d_circles[1:10, "measure_id_char"])
     
     leafletProxy("map", data = d_circles) %>%
@@ -50,29 +49,14 @@ function(input, output, session) {
     d_popup <- df %>% 
       filter(df["measure_id_char"] == input)
 
-     content <- as.character(tagList(
-      tags$h4("Percent:", d_popup$data_value),
-
-  
-  
-  #  showOutcomePopup <- function(county, latitude, longitude) {
-   # input <- tolower(input$outcome)
-    #d_popup <- d_popup %>% 
-  #  filter(d_circles["measure_id_char"] == input)
-    
-   # content <- as.character(tagList(
-    #  tags$h4("Percent:", d_popup$data_value),
-
-     # tags$strong(HTML(sprintf("%s, %s",
-      #          d_popup$county_name, d_popup$state_abb
-    #  ))),
-     # tags$br(),
-      #sprintf("Adult population: %s", d_popup$tot_pop), tags$br(),
-      #sprintf("Year: %s", d_popup$year), tags$br(),
-      #sprintf("Data Source: %s", d_circles$DataSource),
-     ))
-    
-    #content <- "map"
+    #content <- paste("(", latitude, ",", longitude, "),", ) - works with this tag
+     
+    content <- as.character(tagList(
+      tags$h4("(", latitude, ",", longitude, ")"), # want tags that will display the "data_value" (percent)
+      tags$br(),
+      sprintf("map")
+    ))
+      
     leafletProxy("map", data = d_popup) %>%
       addPopups(longitude, latitude, content)
   }
@@ -88,18 +72,9 @@ function(input, output, session) {
     })
   })
     
-   # observe({
-     # leafletProxy("map") %>% clearPopups()
-      #event <- input$map_shape_click
-    #  if (is.null(event))
-     #   return()
-      
-    #  isolate({
-     #   showOutcomePopup(event$lat, event$lng)
-      #})
-
-  #  })
-    
+  
+  
+  ## State Predictor #########################################
     
   output$state_predictor <- renderLeaflet({
     leaflet("state_predictor", df) %>%
@@ -120,10 +95,6 @@ function(input, output, session) {
 }
 
 
-  
-  
->>>>>>> 465165d70d7c9f557742cd610a337f708102cc98
-  
   
   
 
