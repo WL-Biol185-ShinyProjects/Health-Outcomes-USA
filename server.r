@@ -6,7 +6,7 @@ library(dplyr)
 library(shiny)
 library(tidyverse)
 
-df <- read.csv("d_new.csv")
+df <- readRDS("d_new.RData")
 d_circles <- df
 df_plot <- df
 
@@ -44,9 +44,6 @@ function(input, output, session) {
                  fillOpacity=0.4)
   })
   
-<<<<<<< HEAD
- 
-=======
 
   showOutcomePopup <- function(latitude, longitude) {
      input <- tolower(input$outcome)
@@ -88,7 +85,7 @@ function(input, output, session) {
   })
 
    # })
->>>>>>> 2637e08b79c03151997e57c54e987c5d023945ed
+
   ## Data Explorer ###########################################
   # Click the health outcome and display a graph showing counts of each outcome in each state.
   output$plot <- renderPlot({
