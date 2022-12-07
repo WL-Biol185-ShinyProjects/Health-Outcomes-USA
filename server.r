@@ -25,15 +25,11 @@ function(input, output, session) {
   observe({
     input <- tolower(input$outcome)
     
-    # print(input)
-    # print(nrow(d_circles["measure_id_char"]))
+
     
     d_circles <- d_circles %>% 
       filter(d_circles["measure_id_char"] == input)
     
-    
-    # print(nrow(d_circles["measure_id_char"]))
-    # print(d_circles[1:10, "measure_id_char"])
     
     leafletProxy("map", data = d_circles) %>%
       clearShapes() %>%
@@ -44,14 +40,12 @@ function(input, output, session) {
                  fillOpacity=0.4)
   })
   
-<<<<<<< HEAD
- 
-=======
 
-  showOutcomePopup <- function(latitude, longitude) {
+  showOutcomePopup <- function(state, latitude, longitude) {
+    
      input <- tolower(input$outcome)
-    d_popup <- df %>% 
-      filter(df["measure_id_char"] == input)
+     seleted_state <- df %>%
+       filter(df["measure_id_char"] == input)
 
     #content <- paste("(", latitude, ",", longitude, "),", ) - works with this tag
      
@@ -88,7 +82,6 @@ function(input, output, session) {
   })
 
    # })
->>>>>>> 2637e08b79c03151997e57c54e987c5d023945ed
   ## Data Explorer ###########################################
   # Click the health outcome and display a graph showing counts of each outcome in each state.
   output$plot <- renderPlot({
@@ -104,8 +97,4 @@ function(input, output, session) {
 
 
   
-  
-
-
-
   
