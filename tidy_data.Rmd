@@ -1,8 +1,6 @@
 ---
 title: "tidy_data.Rmd"
-output:
-  word_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -178,6 +176,5 @@ d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
 ```{r}
 write.csv(d_new, file = "d_new.csv")
 ```
-
 
 
