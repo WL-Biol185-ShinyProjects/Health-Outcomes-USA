@@ -90,13 +90,16 @@ function(input, output, session) {
   # Click the health outcome and display a graph showing counts of each outcome in each state.
   output$plot <- renderPlot({
     print('hi')
+    outcome_input <- tolower(input$outcome)
+    predictor_input <- tolower(input$predictor)
+    # print(predictor_input)
     df_plot %>%
-      filter(df['measure_id_char'] == tolower(input$outcome)) %>%
-      dplyr::count(df_plot, county.x) %>%
-      df_plot$county.x <- as.factor(df_plot$county.x) %>%
-      histogram(n)
+      filter(df_plot['measure_id_char'] == outcome_input)
+      
+    ggplot(df_plot, aes(x = predictor_input, y = measure_id_char)) + geom_boxplot()
   })
-  
+  # x: socioeconomic
+  # y: health outcome
 }
 
 
