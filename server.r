@@ -8,6 +8,7 @@ library(tidyverse)
 
 df <- read.csv("d_new.csv")
 d_circles <- df
+df_plot <- df
 
 function(input, output, session) {
   
@@ -44,48 +45,16 @@ function(input, output, session) {
                  fillOpacity=0.4)
   })
   
-  output$state_predictor <- renderLeaflet({
-    leaflet("state_predictor", df) %>%
-      addTiles() %>%
-      setView(lng = -93.85, lat = 37.45, zoom = 4)
-      
-  })
-  
-  
-  #  showOutcomePopup <- function(county, latitude, longitude) {
-   # input <- tolower(input$outcome)
-    #d_popup <- d_popup %>% 
-  #  filter(d_circles["measure_id_char"] == input)
-    
-   # content <- as.character(tagList(
-    #  tags$h4("Percent:", d_popup$data_value),
-     # tags$strong(HTML(sprintf("%s, %s",
-      #                         d_popup$county_name, d_popup$state_abb
-    #  ))), tags$br(),
-     # sprintf("Adult population: %s", d_popup$tot_pop), tags$br(),
-    #  sprintf("Year: %s", d_popup$year), tags$br(),
-     # sprintf("Data Source: %s", d_circles$DataSource),
-    #))
-  #  leafletProxy("map", data = d_popup) %>%
-   # addPopups(longitude, latitude, content, layerId = county)
-    #}
-    
-  #  observe({
-   #   leafletProxy("map") %>% clearPopups()
-    #  event <- input$map_shape_click
-     # if (is.null(event))
-      #  return()
-      
-    #  isolate({
-     #   showOutcomePopup(event$lat, event$lng)
-      #})
-   # })
+ 
   ## Data Explorer ###########################################
   # Click the health outcome and display a graph showing counts of each outcome in each state.
   output$plot <- renderPlot({
-    df <- df %>%
-    ggplot(aes(input$predictors, input$outcomes)) + 
-      geom_point()
+    print('hi')
+    df_plot %>%
+      filter(df['measure_id_char'] == tolower(input$outcome)) %>%
+      dplyr::count(df_plot, county.x) %>%
+      df_plot$county.x <- as.factor(df_plot$county.x) %>%
+      histogram(n)
   })
   
 }
