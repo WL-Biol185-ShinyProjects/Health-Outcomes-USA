@@ -70,7 +70,6 @@ predictors <- c(
 
 # Sets up navbar/title
 navbarPage("US Health Outcomes", id="nav",
-           
            tabPanel("Welcome",
                     div(class = "outer"),
                     tags$h2("Welcome to the US Health Outcomes Explorer!"),
@@ -111,12 +110,10 @@ navbarPage("US Health Outcomes", id="nav",
                     selectInput("state3", "State", states),
                     leafletOutput("median_income"),
            ),
-           
-tabPanel("Demographic vs. Outcomes", # Tab 4
-         selectInput("outcome4", "Outcome", outcomes),
-         selectInput("predictor4", "Socioeconomic Predictor", predictors),
-         #plotOutput("plot1"),
-         plotOutput("plot2")
+           tabPanel("Demographic vs. Outcomes", # Tab 4
+                    selectInput("outcome4", "Outcome", outcomes),
+                    selectInput("predictor4", "Socioeconomic Predictor", predictors),
+                    plotOutput("plot4")
         )
 
    )
