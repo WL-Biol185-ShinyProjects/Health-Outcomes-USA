@@ -78,40 +78,15 @@ function(input, output, session) {
   })
   
   
-
-  
-  ## TAB 2 State Predictor #########################################
-  #use "input$state2" and "input$predictor2"
+  ## TAB 2 Educational Attainment by County #########################################
+  #use "input$state2" 
   
   #reactive functions for statewide county map
   changeState <- reactive({
     return(input$state2)
   })
   
-  changePredictor <- reactive({
-    return(input$predictor2)
-  })
-  
-  output$state_predictor <- renderLeaflet({
-    
-    #importing geo spatial data
-    stateGeo <- geojson_read("states.geo.json", what = "sp")
-    
-    countyGeo <- geojson_read("counties.json", what = "sp")
-    
-
-  ## TAB 2 State Predictor #########################################
-    #use "input$state2" and "input$predictor2"
-  
-  #reactive functions for statewide county map
-  changeState <- reactive({
-    return(input$state2)
-  })
-  
-  changePredictor <- reactive({
-    return(input$predictor2)
-  })
-  
+  #Output function for statewide 
   output$state_predictor <- renderLeaflet({
     
     #importing geo spatial data
@@ -129,12 +104,6 @@ function(input, output, session) {
     #joining df with json data
     countyGeo@data <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
                                                            "NAME" = "county_name"))
-
-      
-    #joining df with json data
-    countyGeo@data <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
-                                               "NAME" = "county_name"))
-
     
     #select state specified by user
     statePolygon <- which(countyGeo@data$stateName != changeState())
@@ -162,10 +131,13 @@ function(input, output, session) {
     
   })
   
-  # })
   
-  ## TAB 3 Data Explorer ###########################################
-  # use "input$outcome3" and "input$predictor3"
+  ## TAB 3 Median Income by County #########################################
+  #use "input$state3" 
+  
+  
+  ## TAB 4 Data Explorer ###########################################
+  # use "input$outcome4" and "input$predictor4"
   # Click the health outcome and display a graph showing counts of each outcome in each state.
   output$plot1 <- renderPlot({
     
