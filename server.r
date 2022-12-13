@@ -5,6 +5,7 @@ library(lattice)
 library(dplyr)
 library(shiny)
 library(tidyverse)
+library(geojsonio)
 
 df <- readRDS("d_new.RData")
 d_circles <- df
@@ -92,8 +93,8 @@ function(input, output, session) {
   
   geo <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
                                                "NAME" = "county_name"))
-  
-  
+
+
     
   })
 
