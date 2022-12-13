@@ -2,19 +2,11 @@ library(leaflet)
 
 # Choices for drop-downs
 outcomes <- c(
-  "Arthritis" = "Arthritis",
   "BpHigh" = "BpHigh",
-  "Cancer" = "Cancer",
-  "Casthma" = "Casthma",
-  "CHD" = "CHD",
-  "COPD" = "COPD",
   "Depression" = "Depression",
   "Diabetes" = "Diabetes",
   "HighChol" = "HighChol",
-  "Kidney" = "Kidney",
   "Obesity" = "Obesity",
-  "Stroke" = "Stroke",
-  "TeethLost" = "TeethLost"
 )
 
 states <- c(
@@ -74,10 +66,6 @@ states <- c(
 predictors <- c(
   'median income' = 'med_inc',
   'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed',
-  'pct population white' = 'pct_white',
-  'pct population black' = 'pct_black',
-  'pct population native' = 'pct_native',
-  'pct population asian' = 'pct_asian'
 )
 
 # Sets up navbar/title
