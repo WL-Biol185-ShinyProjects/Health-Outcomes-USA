@@ -167,7 +167,7 @@ function(input, output, session) {
   # y: health outcome
   
   output$plot2 <- renderPlot({ # different outcomes by predictor
-   #df_plot <- df
+    #df_plot <- df
     #outcome_input <- tolower(input$outcome3)
     #predictor_input <- input$predictor3
     #print(outcome_input)
@@ -175,9 +175,8 @@ function(input, output, session) {
     #print(predictor_input)
     
     #df_plot %>%
-      #filter(df_plot["measure_id_char"] == outcome_input) %>%
-      #ggplot(aes(x = measure_id_char, y = df$predictor_input)) + geom_boxplot()
-    
+      #filter(df_plot["measure_id_char"] == outcome_input)
+      #ggplot(aes(x = measure_id_char, y = df_plot$predictor_input)) + geom_boxplot()
     
     #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot()
   })
