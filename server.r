@@ -78,28 +78,6 @@ function(input, output, session) {
   })
   
   
-
-  
-  ## TAB 2 State Predictor #########################################
-  #use "input$state2" and "input$predictor2"
-  
-  #reactive functions for statewide county map
-  changeState <- reactive({
-    return(input$state2)
-  })
-  
-  changePredictor <- reactive({
-    return(input$predictor2)
-  })
-  
-  output$state_predictor <- renderLeaflet({
-    
-    #importing geo spatial data
-    stateGeo <- geojson_read("states.geo.json", what = "sp")
-    
-    countyGeo <- geojson_read("counties.json", what = "sp")
-    
-
   ## TAB 2 State Predictor #########################################
     #use "input$state2" and "input$predictor2"
   
