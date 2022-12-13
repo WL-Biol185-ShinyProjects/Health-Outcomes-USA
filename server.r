@@ -10,6 +10,9 @@ library(geojsonio)
 df <- readRDS("d_new.RData")
 d_circles <- df
 
+stateCoordinates <- read.csv("stateCoords.csv")
+
+
 function(input, output, session) {
   
   ## TAB 1 Interactive US Map ###########################################
@@ -78,23 +81,55 @@ function(input, output, session) {
   
   ## TAB 2 State Predictor #########################################
     #use "input$state2" and "input$predictor2"
+  
+  #reactive functions for statewide county map
+  changeState <- reactive({
+    return(input$state2)
+  })
+  
+  changePredictor <- reactive({
+    return(input$predictor2)
+  })
+  
   output$state_predictor <- renderLeaflet({
-    leaflet("state_predictor", df) %>%
-      addTiles() %>%
-      setView(lng = -93.85, lat = 37.45, zoom = 4)
+    
+    #importing geo spatial data
+    stateGeo <- geojson_read("states.geo.json", what = "sp")
   
-  stateGeo <- geojson_read("states.geo.json", what = "sp")
+    countyGeo <- geojson_read("counties.json", what = "sp")
   
-  countyGeo <- geojson_read("counties.json", what = "sp")
-  
-  stateNames <- as.character(stateGeo@data$NAME)
-  names(stateNames) <- as.character(stateGeo@data$STATE)
-  countyGeo@data$stateName <- stateNames[as.character(countyGeo@data$STATE)]
-  
-  geo <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
+    #adding state names to the counties table 
+    stateNames <- as.character(stateGeo@data$NAME)
+    names(stateNames) <- as.character(stateGeo@data$STATE)
+    countyGeo@data$stateName <- stateNames[as.character(countyGeo@data$STATE)]
+      
+    #joining df with json data
+    countyGeo@data <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
                                                "NAME" = "county_name"))
-
-
+    
+    #select state specified by user
+    statePolygon <- which(countyGeo@data$stateName != changeState())
+    stateLength <- length(statePolygon)
+    counter <- 0
+    
+    #filter out polygons of other states
+    for (i in 1:stateLength){
+      countyGeo@polygons[[statePolygon[i]-counter]] <- NULL
+      counter <- counter + 1
+    }
+    counter <- 0
+    
+    #grab state specific values for setview
+    currentLong <- stateCoordinates$lon[stateCoordinates$state == changeState()]
+    currentLat <- stateCoordinates$lat[stateCoordinates$state == changeState()]
+    currentZoom <- stateCoordinates$zoom[stateCoordinates$state == changeState()]
+    
+    #create leaflet visualization
+    leaflet(countyGeo) %>%
+      addPolygons(fillColor = ~pal(mean_predictor)) %>%
+      
+      setView(currentLong, currentLat, currentZoom) 
+    
     
   })
 
