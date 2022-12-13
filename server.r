@@ -155,6 +155,6 @@ function(input, output, session) {
         geom_boxplot() #+ 
       #labs(x = outcome_input, y = predictor_input)
 
-    #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot()
+    #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot() 
   })
 }
