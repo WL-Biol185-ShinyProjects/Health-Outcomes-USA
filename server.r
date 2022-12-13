@@ -103,45 +103,20 @@ function(input, output, session) {
   ## TAB 3 Data Explorer ###########################################
   # use "input$outcome3" and "input$predictor3"
   # Click the health outcome and display a graph showing counts of each outcome in each state.
-  output$plot1 <- renderPlot({
-    
-    outcome_input <- tolower(input$outcome3)
-    predictor_input <- tolower(input$predictor3)
-    
-   # print(outcome_input)
-    #print(predictor_input)
-    
-   # df_plot <- df
-    
-    #df_plot %>%
-     # filter(measure_id_char == outcome_input)
-    
-   # ggplot(df_plot, aes(x = df_plot[,2], y = measure_id_char)) + geom_line()
-   # df_plot %>%
-    #  group_by(measure_id_char)
-    
-     # ggplot(df_plot) + geom_point(aes(x = pct_white))
-    
-    # .data[[input]]
-    #print(df$pct_white)
-   # print(predictor_input)
-    #print(outcome_input) 
-    
-  })
-  # x: socioeconomic
-  # y: health outcome
   
-  output$plot2 <- renderPlot({ # different outcomes by predictor
-    #df_plot <- df
-    #outcome_input <- tolower(input$outcome3)
-    #predictor_input <- input$predictor3
-    #print(outcome_input)
-    #print(class(outcome_input))
-    #print(predictor_input)
+  output$plot4 <- renderPlot({ # different outcomes by predictor
+    df_plot <- df
+    outcome_input <- tolower(input$outcome4)
+    predictor_input <- input$predictor4
+    print(outcome_input)
+    print(predictor_input)
     
-    #df_plot %>%
-      #filter(df_plot["measure_id_char"] == outcome_input)
-      #ggplot(aes(x = measure_id_char, y = df_plot$predictor_input)) + geom_boxplot()
+    df_plot %>%
+      filter(df_plot["measure_id_char"] == outcome_input) %>%
+      filter(df_plot["predictor" == predictor_input]) %>%
+      ggplot(aes(x = measure_id_char, y = predictor_value)) + 
+        geom_boxplot() #+ 
+      #labs(x = outcome_input, y = predictor_input)
     
     #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot()
   })
