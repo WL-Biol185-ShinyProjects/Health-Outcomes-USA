@@ -5,14 +5,15 @@ library(lattice)
 library(dplyr)
 library(shiny)
 library(tidyverse)
+library(geojsonio)
 
 df <- readRDS("d_new.RData")
 d_circles <- df
-df_plot <- df
 
 function(input, output, session) {
   
-  ## Interactive Map ###########################################
+  ## TAB 1 Interactive US Map ###########################################
+  # use "input$outcome1"
   
   # Create the map
   output$map <- renderLeaflet({
@@ -23,8 +24,12 @@ function(input, output, session) {
   
   #output$circles <- renderPlot({
   observe({
+<<<<<<< HEAD
     input_outcome <- tolower(input$outcome)
     input_state <- tolower(input$state)
+=======
+    input <- tolower(input$outcome1)
+>>>>>>> 4038aebf353b68e0608cce4839ad977970f947cc
     
 
     
@@ -45,10 +50,18 @@ function(input, output, session) {
   
 
   showOutcomePopup <- function(latitude, longitude) {
+<<<<<<< HEAD
     
      input <- tolower(input$outcome)
      d_tags <- df %>%
        filter(df["measure_id_char"] == input)
+=======
+     input <- tolower(input$outcome1)
+    d_popup <- df %>% 
+      filter(df["measure_id_char"] == input)
+
+    #content <- paste("(", latitude, ",", longitude, "),", ) - works with this tag
+>>>>>>> 4038aebf353b68e0608cce4839ad977970f947cc
      
        content <- as.character(tagList(
          tags$h4("(", latitude, ",", longitude, ")"), # want tags that will display the "data_value" (percent)
@@ -73,28 +86,76 @@ function(input, output, session) {
     
   
   
-  ## State Predictor #########################################
-    
+  ## TAB 2 State Predictor #########################################
+    #use "input$state2" and "input$predictor2"
   output$state_predictor <- renderLeaflet({
     leaflet("state_predictor", df) %>%
       addTiles() %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4)
+  
+  stateGeo <- geojson_read("states.geo.json", what = "sp")
+  
+  countyGeo <- geojson_read("counties.json", what = "sp")
+  
+  stateNames <- as.character(stateGeo@data$NAME)
+  names(stateNames) <- as.character(stateGeo@data$STATE)
+  countyGeo@data$stateName <- stateNames[as.character(countyGeo@data$STATE)]
+  
+  geo <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
+                                               "NAME" = "county_name"))
+
+
     
   })
 
    # })
 
-  ## Data Explorer ###########################################
+  ## TAB 3 Data Explorer ###########################################
+  # use "input$outcome3" and "input$predictor3"
   # Click the health outcome and display a graph showing counts of each outcome in each state.
-  output$plot <- renderPlot({
-    print('hi')
-    df_plot %>%
-      filter(df['measure_id_char'] == tolower(input$outcome)) %>%
-      dplyr::count(df_plot, county.x) %>%
-      df_plot$county.x <- as.factor(df_plot$county.x) %>%
-      histogram(n)
+  output$plot1 <- renderPlot({
+    
+    outcome_input <- tolower(input$outcome3)
+    predictor_input <- tolower(input$predictor3)
+    
+   # print(outcome_input)
+    #print(predictor_input)
+    
+   # df_plot <- df
+    
+    #df_plot %>%
+     # filter(measure_id_char == outcome_input)
+    
+   # ggplot(df_plot, aes(x = df_plot[,2], y = measure_id_char)) + geom_line()
+   # df_plot %>%
+    #  group_by(measure_id_char)
+    
+     # ggplot(df_plot) + geom_point(aes(x = pct_white))
+    
+    # .data[[input]]
+    #print(df$pct_white)
+   # print(predictor_input)
+    #print(outcome_input) 
+    
   })
+  # x: socioeconomic
+  # y: health outcome
   
+  output$plot2 <- renderPlot({ # different outcomes by predictor
+   #df_plot <- df
+    #outcome_input <- tolower(input$outcome3)
+    #predictor_input <- input$predictor3
+    #print(outcome_input)
+    #print(class(outcome_input))
+    #print(predictor_input)
+    
+    #df_plot %>%
+      #filter(df_plot["measure_id_char"] == outcome_input) %>%
+      #ggplot(aes(x = measure_id_char, y = df$predictor_input)) + geom_boxplot()
+    
+    
+    #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot()
+  })
 }
 
 
