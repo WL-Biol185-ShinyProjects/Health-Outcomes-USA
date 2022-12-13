@@ -99,7 +99,17 @@ navbarPage("US Health Outcomes", id="nav",
                         #plotOutput("circles")
                     ),
                     
+<<<<<<< HEAD
            ),
+=======
+                    selectInput("outcome1", "Outcome", outcomes),
+                  
+                    leafletOutput("map"),
+                    #plotOutput("circles")
+              ),
+              
+            ),
+>>>>>>> 7d9eeb7ea3150a05f395e3cf47b6a4385e797799
            
            tabPanel("Educational Attainment by County", # Tab 2
                     selectInput("state2", "State", states),
@@ -114,6 +124,12 @@ navbarPage("US Health Outcomes", id="nav",
                     selectInput("outcome4", "Outcome", outcomes),
                     selectInput("predictor4", "Socioeconomic Predictor", predictors),
                     plotOutput("plot4")
+<<<<<<< HEAD
            )
            
 )
+=======
+        )
+
+   )
+>>>>>>> 7d9eeb7ea3150a05f395e3cf47b6a4385e797799

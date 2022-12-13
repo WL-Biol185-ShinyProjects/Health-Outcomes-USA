@@ -78,6 +78,7 @@ function(input, output, session) {
   })
   
   
+
   
   ## TAB 2 State Predictor #########################################
   #use "input$state2" and "input$predictor2"
@@ -98,14 +99,42 @@ function(input, output, session) {
     
     countyGeo <- geojson_read("counties.json", what = "sp")
     
+
+  ## TAB 2 State Predictor #########################################
+    #use "input$state2" and "input$predictor2"
+  
+  #reactive functions for statewide county map
+  changeState <- reactive({
+    return(input$state2)
+  })
+  
+  changePredictor <- reactive({
+    return(input$predictor2)
+  })
+  
+  output$state_predictor <- renderLeaflet({
+    
+    #importing geo spatial data
+    stateGeo <- geojson_read("states.geo.json", what = "sp")
+  
+    countyGeo <- geojson_read("counties.json", what = "sp")
+  
+
     #adding state names to the counties table 
     stateNames <- as.character(stateGeo@data$NAME)
     names(stateNames) <- as.character(stateGeo@data$STATE)
     countyGeo@data$stateName <- stateNames[as.character(countyGeo@data$STATE)]
+
     
     #joining df with json data
     countyGeo@data <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
                                                            "NAME" = "county_name"))
+
+      
+    #joining df with json data
+    countyGeo@data <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
+                                               "NAME" = "county_name"))
+
     
     #select state specified by user
     statePolygon <- which(countyGeo@data$stateName != changeState())
@@ -175,8 +204,13 @@ function(input, output, session) {
     #print(predictor_input)
     
     #df_plot %>%
+
     #filter(df_plot["measure_id_char"] == outcome_input)
     #ggplot(aes(x = measure_id_char, y = df_plot$predictor_input)) + geom_boxplot()
+
+      #filter(df_plot["measure_id_char"] == outcome_input)
+      #ggplot(aes(x = measure_id_char, y = df_plot$predictor_input)) + geom_boxplot()
+
     
     #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot()
   })
