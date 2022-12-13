@@ -113,41 +113,20 @@ navbarPage("US Health Outcomes", id="nav",
               ),
               
             ),
-
-           tabPanel("Percent White by County", # Tab 2
+           
+           tabPanel("Educational Attainment by County", # Tab 2
                     selectInput("state2", "State", states),
-                    leafletOutput("percent_white"),
-            ),
-
-           tabPanel("Percent Black by County", # Tab 3
-                    selectInput("state3", "State", states),
-                    leafletOutput("percent_black"),
-           ),
-           
-           tabPanel("Percent Native by County", # Tab 4
-                    selectInput("state4", "State", states),
-                    leafletOutput("percent_native"),
-           ),
-           
-           tabPanel("Percent Asian by County", # Tab 5
-                    selectInput("state5", "State", states),
-                    leafletOutput("percent_asian"),
-           ),
-           
-           tabPanel("Educational Attainment by County", # Tab 6
-                    selectInput("state6", "State", states),
                     leafletOutput("highschool_education"),
            ),
            
-           tabPanel("Median Income by County", # Tab 7
-                    selectInput("state7", "State", states),
+           tabPanel("Median Income by County", # Tab 3
+                    selectInput("state3", "State", states),
                     leafletOutput("median_income"),
            ),
            
-           
-tabPanel("Demographic vs. Outcomes", # Tab 8
-         selectInput("outcome8", "Outcome", outcomes),
-         selectInput("predictor8", "Socioeconomic Predictor", predictors),
+tabPanel("Demographic vs. Outcomes", # Tab 4
+         selectInput("outcome4", "Outcome", outcomes),
+         selectInput("predictor4", "Socioeconomic Predictor", predictors),
          #plotOutput("plot1"),
          plotOutput("plot2")
         )
