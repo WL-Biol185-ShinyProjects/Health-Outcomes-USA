@@ -103,7 +103,7 @@ navbarPage("US Health Outcomes", id="nav",
                     
                     ),
            
-           tabPanel("Interactive US map", #Tab 1
+           tabPanel("Health Outcomes by State", #Tab 1
                     div(class="outer",
                     
                     selectInput("outcome1", "Outcome", outcomes),
@@ -114,16 +114,40 @@ navbarPage("US Health Outcomes", id="nav",
               
             ),
 
-           tabPanel("Interactive State Map", # Tab 2
+           tabPanel("Percent White by County", # Tab 2
                     selectInput("state2", "State", states),
-                    selectInput("predictor2", "Socioeconomic Predictor", predictors),
-                    leafletOutput("state_predictor"),
+                    leafletOutput("percent_white"),
             ),
 
+           tabPanel("Percent Black by County", # Tab 3
+                    selectInput("state3", "State", states),
+                    leafletOutput("percent_black"),
+           ),
            
-tabPanel("Data explorer", # Tab 3
-         selectInput("outcome3", "Outcome", outcomes),
-         selectInput("predictor3", "Socioeconomic Predictor", predictors),
+           tabPanel("Percent Native by County", # Tab 4
+                    selectInput("state4", "State", states),
+                    leafletOutput("percent_native"),
+           ),
+           
+           tabPanel("Percent Asian by County", # Tab 5
+                    selectInput("state5", "State", states),
+                    leafletOutput("percent_asian"),
+           ),
+           
+           tabPanel("Educational Attainment by County", # Tab 6
+                    selectInput("state6", "State", states),
+                    leafletOutput("highschool_education"),
+           ),
+           
+           tabPanel("Median Income by County", # Tab 7
+                    selectInput("state7", "State", states),
+                    leafletOutput("median_income"),
+           ),
+           
+           
+tabPanel("Demographic vs. Outcomes", # Tab 8
+         selectInput("outcome8", "Outcome", outcomes),
+         selectInput("predictor8", "Socioeconomic Predictor", predictors),
          #plotOutput("plot1"),
          plotOutput("plot2")
         )
