@@ -174,7 +174,7 @@ d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
 ```
 
 ```{r}
-write.csv(d_new, file = "d_new.csv")
+saveRDS(d_new, "d_new.RData")
 ```
 
 

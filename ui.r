@@ -88,10 +88,11 @@ navbarPage("US Health Outcomes", id="nav",
                     "Welcome to the US Health Outcomes Explorer!",
                     ),
            
-           tabPanel("Interactive US map", #first tab
+           tabPanel("Health Outcomes by State", #first tab
                     div(class="outer",
                     
                     selectInput("outcome", "Outcome", outcomes),
+                    selectInput("state", "State", states),
                   
                     leafletOutput("map"),
                     #plotOutput("circles")
@@ -101,7 +102,9 @@ navbarPage("US Health Outcomes", id="nav",
 
            tabPanel("Interactive State Map",
                     selectInput("state", "State", states),
+                    selectInput("outcome", "Outcome", outcomes),
                     selectInput("predictor", "Socioeconomic Predictor", predictors),
+                    leafletOutput("state_outcome"),
                     leafletOutput("state_predictor"),
             ),
 

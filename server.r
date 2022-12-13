@@ -23,12 +23,15 @@ function(input, output, session) {
   
   #output$circles <- renderPlot({
   observe({
-    input <- tolower(input$outcome)
+    input_outcome <- tolower(input$outcome)
+    input_state <- tolower(input$state)
     
 
     
     d_circles <- d_circles %>% 
-      filter(d_circles["measure_id_char"] == input)
+      filter(d_circles["measure_id_char"] == input_outcome) %>%
+      #filter(d_circles["state_name"] == input_state)
+    
     
     
     leafletProxy("map", data = d_circles) %>%
@@ -41,21 +44,19 @@ function(input, output, session) {
   })
   
 
-  showOutcomePopup <- function(state, latitude, longitude) {
+  showOutcomePopup <- function(latitude, longitude) {
     
      input <- tolower(input$outcome)
-     seleted_state <- df %>%
+     d_tags <- df %>%
        filter(df["measure_id_char"] == input)
-
-    #content <- paste("(", latitude, ",", longitude, "),", ) - works with this tag
      
-    content <- as.character(tagList(
-      tags$h4("(", latitude, ",", longitude, ")"), # want tags that will display the "data_value" (percent)
-      tags$br(),
+       content <- as.character(tagList(
+         tags$h4("(", latitude, ",", longitude, ")"), # want tags that will display the "data_value" (percent)
+         tags$br(),
       sprintf("map")
     ))
       
-    leafletProxy("map", data = d_popup) %>%
+    leafletProxy("map", data = d_tags) %>%
       addPopups(longitude, latitude, content)
   }
 
@@ -82,10 +83,7 @@ function(input, output, session) {
   })
 
    # })
-<<<<<<< HEAD
-=======
 
->>>>>>> a46550ff16737203790a13d3df1d6ca30ffac213
   ## Data Explorer ###########################################
   # Click the health outcome and display a graph showing counts of each outcome in each state.
   output$plot <- renderPlot({
