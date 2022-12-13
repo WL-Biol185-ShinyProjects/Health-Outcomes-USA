@@ -5,6 +5,7 @@ library(lattice)
 library(dplyr)
 library(shiny)
 library(tidyverse)
+library(geojsonio)
 
 df <- readRDS("d_new.RData")
 d_circles <- df
@@ -81,6 +82,19 @@ function(input, output, session) {
     leaflet("state_predictor", df) %>%
       addTiles() %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4)
+  
+  stateGeo <- geojson_read("states.geo.json", what = "sp")
+  
+  countyGeo <- geojson_read("counties.json", what = "sp")
+  
+  stateNames <- as.character(stateGeo@data$NAME)
+  names(stateNames) <- as.character(stateGeo@data$STATE)
+  countyGeo@data$stateName <- stateNames[as.character(countyGeo@data$STATE)]
+  
+  geo <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
+                                               "NAME" = "county_name"))
+
+
     
   })
 
