@@ -6,7 +6,7 @@ outcomes <- c(
   "Depression" = "Depression",
   "Diabetes" = "Diabetes",
   "HighChol" = "HighChol",
-  "Obesity" = "Obesity",
+  "Obesity" = "Obesity"
 )
 
 states <- c(
@@ -65,8 +65,7 @@ states <- c(
 
 predictors <- c(
   'median income' = 'med_inc',
-  'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed',
-)
+  'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed')
 
 # Sets up navbar/title
 navbarPage("US Health Outcomes", id="nav",
@@ -100,13 +99,7 @@ navbarPage("US Health Outcomes", id="nav",
                         #plotOutput("circles")
                     ),
                     
-<<<<<<< HEAD
 
-           )
-           
-)
-
-=======
                     selectInput("outcome1", "Outcome", outcomes),
                   
                     leafletOutput("map"),
@@ -130,4 +123,3 @@ navbarPage("US Health Outcomes", id="nav",
                     plotOutput("plot4")
            ), 
         )
->>>>>>> 6b23aeb2914adbb943ad1b56c39f5a69c3db459c
