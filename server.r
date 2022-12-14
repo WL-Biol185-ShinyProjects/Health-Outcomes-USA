@@ -78,32 +78,36 @@ function(input, output, session) {
   })
   
   
-
+  ## TAB 2 Educational Attainment by County #########################################
+  #use "input$state2" 
   
   #reactive functions for statewide county map
   changeState <- reactive({
     return(input$state2)
   })
   
-
   #Output function for statewide 
-  output$state_predictor <- renderLeaflet({
+  output$highschool_ed <- renderLeaflet({
+    
+    #filtering data by educational attainment, grouping by county name
+    map_df <- df %>%
+      filter(df["predictor"] == "higher_ed") %>%
+      group_by(county_name, state_name) %>%
+      summarize(percent_ed = median(predictor_value), na.rm =TRUE)
     
     #importing geo spatial data
     stateGeo <- geojson_read("states.geo.json", what = "sp")
-  
+    
     countyGeo <- geojson_read("counties.json", what = "sp")
-  
-
+    
     #adding state names to the counties table 
     stateNames <- as.character(stateGeo@data$NAME)
     names(stateNames) <- as.character(stateGeo@data$STATE)
     countyGeo@data$stateName <- stateNames[as.character(countyGeo@data$STATE)]
-
     
     #joining df with json data
-    countyGeo@data <- left_join(countyGeo@data, df, by = c("stateName" = "state_name",
-                                                           "NAME" = "county_name"))
+    countyGeo@data <- left_join(countyGeo@data, map_df, by = c("stateName" = "state_name",
+                                                               "NAME" = "county_name"))
     
     #select state specified by user
     statePolygon <- which(countyGeo@data$stateName != changeState())
@@ -122,10 +126,12 @@ function(input, output, session) {
     currentLat <- stateCoordinates$lat[stateCoordinates$state == changeState()]
     currentZoom <- stateCoordinates$zoom[stateCoordinates$state == changeState()]
     
+    #prepping colors for chloropleth
+    pal <- colorBin("RdYlGn", domain = countyGeo@data$percent_ed)
+    
     #create leaflet visualization
     leaflet(countyGeo) %>%
-      addPolygons(fillColor = ~pal(mean_predictor)) %>%
-      
+      addPolygons(fillColor = ~pal(percent_ed)) %>%
       setView(currentLong, currentLat, currentZoom) 
     
     
