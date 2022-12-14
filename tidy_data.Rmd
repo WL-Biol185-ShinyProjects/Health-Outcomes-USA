@@ -162,7 +162,7 @@ d_new <- left_join(d_clean, d_1, by = c('county_name','state_name')) %>%
 ```
 
 ```{r}
-d_new <- gather(d_new, key = "predictor", value = "predictor_value", 12:13)
+d_new <- gather(d_new, key = "predictor", value = "predictor_value", 5:6)
 ```
 
 ```{r}
