@@ -4,6 +4,12 @@ output:
   pdf_document: default
   html_document: default
 ---
+---
+title: "tidy_data.Rmd"
+output:
+  word_document: default
+  html_document: default
+---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -30,15 +36,23 @@ d_outcome <- d[d$Category == "Health Outcomes", ]
 ```
 
 ```{r}
-d_outcome <- filter(d_outcome, MeasureId== 'BPHIGH'| MeasureId== 'DEPRESSION'| MeasureId== 'DIABETES' | MeasureId== 'HIGHCHOL'| MeasureId== 'OBESITY')
+table(d_outcome$MeasureId)
 ```
 
 ```{r}
+d_outcome$Arthritis  <- ifelse(d_outcome$MeasureId == "ARTHRITIS", 1, 0)
 d_outcome$BpHigh     <- ifelse(d_outcome$MeasureId == "BPHIGH", 1, 0)
+d_outcome$Cancer     <- ifelse(d_outcome$MeasureId == "CANCER", 1, 0)
+d_outcome$Casthma    <- ifelse(d_outcome$MeasureId == "CASTHMA", 1, 0)
+d_outcome$CHD        <- ifelse(d_outcome$MeasureId == "CHD", 1, 0)
+d_outcome$COPD       <- ifelse(d_outcome$MeasureId == "COPD", 1, 0)
 d_outcome$Depression <- ifelse(d_outcome$MeasureId == "DEPRESSION", 1, 0)
 d_outcome$Diabetes   <- ifelse(d_outcome$MeasureId == "DIABETES", 1, 0)
 d_outcome$HighChol   <- ifelse(d_outcome$MeasureId == "HIGHCHOL", 1, 0)
+d_outcome$Kidney     <- ifelse(d_outcome$MeasureId == "KIDNEY", 1, 0)
 d_outcome$Obesity    <- ifelse(d_outcome$MeasureId == "OBESITY", 1, 0)
+d_outcome$Stroke     <- ifelse(d_outcome$MeasureId == "STROKE", 1, 0)
+d_outcome$TeethLost  <- ifelse(d_outcome$MeasureId == "TEETHLOST", 1, 0)
 ```
 
 ```{r}
@@ -47,10 +61,8 @@ d_outcome$Obesity    <- ifelse(d_outcome$MeasureId == "OBESITY", 1, 0)
 d_outcome$Geolocation <- gsub("POINT ", "", d_outcome$Geolocation)
 d_outcome$Geolocation <- gsub("\\(", "", d_outcome$Geolocation)
 d_outcome$Geolocation <- gsub("\\)", "", d_outcome$Geolocation)
-
 # str_split to split the longitude and latitude
 l <- strsplit(d_outcome$Geolocation, " ", fixed = TRUE)
-
 # Create longitude and latitude columns on the d_outcome data frame
 # sapply what we get out of str_split
 d_outcome$longitude <- as.numeric( sapply(l, function(x) { x[1] } ) ) # for longitude
@@ -169,10 +181,6 @@ d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
 
 ```{r}
 d_new <- gather(d_new, key = "predictor", value = "predictor_value", 12:17)
-```
-
-```{r}
-
 ```
 
 ```{r}
