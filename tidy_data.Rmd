@@ -30,7 +30,7 @@ d_outcome <- d[d$Category == "Health Outcomes", ]
 ```
 
 ```{r}
-d_outcome <- filter(d_outcome, , MeasureId== 'BPHIGH'| MeasureId== 'DEPRESSION'| MeasureId== 'DIABETES' | MeasureId== 'HIGHCHOL'| MeasureId== 'OBESITY')
+d_outcome <- filter(d_outcome, MeasureId== 'BPHIGH'| MeasureId== 'DEPRESSION'| MeasureId== 'DIABETES' | MeasureId== 'HIGHCHOL'| MeasureId== 'OBESITY')
 ```
 
 ```{r}
@@ -169,6 +169,10 @@ d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
 
 ```{r}
 d_new <- gather(d_new, key = "predictor", value = "predictor_value", 12:17)
+```
+
+```{r}
+
 ```
 
 ```{r}
