@@ -6,7 +6,7 @@ outcomes <- c(
   "Depression" = "Depression",
   "Diabetes" = "Diabetes",
   "HighChol" = "HighChol",
-  "Obesity" = "Obesity",
+  "Obesity" = "Obesity"
 )
 
 states <- c(
@@ -65,7 +65,7 @@ states <- c(
 
 predictors <- c(
   'median income' = 'med_inc',
-  'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed',
+  'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed'
 )
 
 # Sets up navbar/title
