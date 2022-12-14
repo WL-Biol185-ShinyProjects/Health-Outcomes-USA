@@ -147,7 +147,7 @@ function(input, output, session) {
   # Click the health outcome and display a graph showing counts of each outcome in each state.
 
   
-  output$plot4 <- renderPlot({ # different outcomes by predictor
+  output$plot4 <- renderPlot({ # different outcomes by predictor 
     df_plot <- df
     outcome_input <- tolower(input$outcome4)
     predictor_input <- input$predictor4
