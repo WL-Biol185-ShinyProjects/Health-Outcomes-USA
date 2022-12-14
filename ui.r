@@ -63,9 +63,9 @@ states <- c(
   'Wyoming'
 )
 
-predictors <- c(
-  'median income' = 'med_inc',
-  'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed')
+#predictors <- c(
+  #'median income' = 'med_inc',
+  #'pct 25 and older with a highschool diploma/GED or higher' = 'higher_ed')
 
 # Sets up navbar/title
 navbarPage("US Health Outcomes", id="nav",
@@ -93,33 +93,27 @@ navbarPage("US Health Outcomes", id="nav",
                     div(class="outer",
                         
                         selectInput("outcome1", "Outcome", outcomes),
-                        selectInput("state1", "State", states),
+                        selectInput("state1", "State", states)
                         
                         leafletOutput("map"),
                         #plotOutput("circles")
                     ),
-                    
-
-                    selectInput("outcome1", "Outcome", outcomes),
-                  
-                    leafletOutput("map"),
-                    #plotOutput("circles")
               ),
               
 
-           tabPanel("Educational Attainment by County", # Tab 2
-                    selectInput("state2", "State", states),
-                    leafletOutput("highschool_education"),
-           ),
+           #tabPanel("Educational Attainment by County", # Tab 2
+           #         selectInput("state2", "State", states),
+           #         leafletOutput("highschool_education"),
+           #),
            
-           tabPanel("Median Income by County", # Tab 3
-                    selectInput("state3", "State", states),
-                    leafletOutput("median_income"),
-           ),
+           #tabPanel("Median Income by County", # Tab 3
+           #         selectInput("state3", "State", states),
+           #         leafletOutput("median_income"),
+           #),
            
-           tabPanel("Demographic vs. Outcomes", # Tab 4
-                    selectInput("outcome4", "Outcome", outcomes),
-                    selectInput("predictor4", "Socioeconomic Predictor", predictors),
-                    plotOutput("plot4")
-           ), 
+           #tabPanel("Demographic vs. Outcomes", # Tab 4
+           #         selectInput("outcome4", "Outcome", outcomes),
+           #         selectInput("predictor4", "Socioeconomic Predictor", predictors),
+           #         plotOutput("plot4")
+           #), 
         )
