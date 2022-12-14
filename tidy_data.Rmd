@@ -40,22 +40,6 @@ table(d_outcome$MeasureId)
 ```
 
 ```{r}
-d_outcome$Arthritis  <- ifelse(d_outcome$MeasureId == "ARTHRITIS", 1, 0)
-d_outcome$BpHigh     <- ifelse(d_outcome$MeasureId == "BPHIGH", 1, 0)
-d_outcome$Cancer     <- ifelse(d_outcome$MeasureId == "CANCER", 1, 0)
-d_outcome$Casthma    <- ifelse(d_outcome$MeasureId == "CASTHMA", 1, 0)
-d_outcome$CHD        <- ifelse(d_outcome$MeasureId == "CHD", 1, 0)
-d_outcome$COPD       <- ifelse(d_outcome$MeasureId == "COPD", 1, 0)
-d_outcome$Depression <- ifelse(d_outcome$MeasureId == "DEPRESSION", 1, 0)
-d_outcome$Diabetes   <- ifelse(d_outcome$MeasureId == "DIABETES", 1, 0)
-d_outcome$HighChol   <- ifelse(d_outcome$MeasureId == "HIGHCHOL", 1, 0)
-d_outcome$Kidney     <- ifelse(d_outcome$MeasureId == "KIDNEY", 1, 0)
-d_outcome$Obesity    <- ifelse(d_outcome$MeasureId == "OBESITY", 1, 0)
-d_outcome$Stroke     <- ifelse(d_outcome$MeasureId == "STROKE", 1, 0)
-d_outcome$TeethLost  <- ifelse(d_outcome$MeasureId == "TEETHLOST", 1, 0)
-```
-
-```{r}
 # Clean the Geolocation column to only have the (longitutde, latitude) coordinates
 # take out the parentheses so they are only the numbers
 d_outcome$Geolocation <- gsub("POINT ", "", d_outcome$Geolocation)
@@ -135,10 +119,6 @@ d_1 <- d_1 %>%
  transmute('county'     = COUNTY,
             'state_name' = STATE,
             'tot_pop'    = AJWNE001,
-            'pct_white'  = AJWNE002 / AJWNE001,
-            'pct_black'  = AJWNE003 / AJWNE001,
-            'pct_native' = AJWNE004 / AJWNE001,
-            'pct_asian' = AJWNE005 / AJWNE001,
             'med_inc'    = AJZAE001,
             'higher_ed'  = (AJYPE017 + AJYPE018 + AJYPE019 + AJYPE020 +
            AJYPE021 + AJYPE022 + AJYPE023 + AJYPE024 + AJYPE025) / AJYPE001)
@@ -167,20 +147,22 @@ d_clean <- d_clean %>%
 ```
 
 ```{r}
-d_new <- left_join(d_clean, d_1, by = c('county_name','state_name'))
+d_new <- left_join(d_clean, d_1, by = c('county_name','state_name')) %>%
+  mutate(state_name = as.factor(state_name),
+         county_name = as.factor(county_name),
+         measure_id = as.factor(measure_id)) %>%
+  select(state_name,
+         county_name,
+         measure_id, 
+         tot_pop,
+         med_inc,
+         higher_ed,
+         longitude,
+         latitude)
 ```
 
 ```{r}
-table(d_new$state_name)
-```
-
-
-```{r}
-d_new$measure_id_char <- tolower(as.character(d_new$measure_id))
-```
-
-```{r}
-d_new <- gather(d_new, key = "predictor", value = "predictor_value", 12:17)
+d_new <- gather(d_new, key = "predictor", value = "predictor_value", 12:13)
 ```
 
 ```{r}
