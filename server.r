@@ -1,8 +1,4 @@
 library(leaflet)
-library(RColorBrewer)
-library(scales)
-library(lattice)
-library(dplyr)
 library(shiny)
 library(tidyverse)
 library(geojsonio)
@@ -27,13 +23,13 @@ function(input, output, session) {
   
   #output$circles <- renderPlot({
   observe({
-    input <- tolower(input$outcome1)
+    input <- input$outcome1
     
     # print(input)
     # print(nrow(d_circles["measure_id_char"]))
     
     d_circles <- d_circles %>% 
-      filter(d_circles["measure_id_char"] == input)
+      filter(d_circles["measure_id"] == input)
     
     
     # print(nrow(d_circles["measure_id_char"]))
@@ -50,9 +46,9 @@ function(input, output, session) {
   
   
   showOutcomePopup <- function(latitude, longitude) {
-    input <- tolower(input$outcome1)
+    input <- input$outcome1
     d_popup <- df %>% 
-      filter(df["measure_id_char"] == input)
+      filter(df["measure_id"] == input)
     
     #content <- paste("(", latitude, ",", longitude, "),", ) - works with this tag
     
@@ -91,6 +87,7 @@ function(input, output, session) {
     
     #filtering data by educational attainment, grouping by county name
     map_df <- df %>%
+      gather(key = "predictor", value = "predictor_value", 5:6) %>%
       filter(df["predictor"] == "higher_ed") %>%
       group_by(county_name, state_name) %>%
       summarize(percent_ed = median(predictor_value), na.rm =TRUE)
@@ -148,19 +145,41 @@ function(input, output, session) {
   
   
   output$plot4 <- renderPlot({ # different outcomes by predictor 
-    df_plot <- df
-    outcome_input <- tolower(input$outcome4)
+    outcome_input <- input$outcome4
     predictor_input <- input$predictor4
-    print(outcome_input)
-    print(predictor_input)
+    #print(outcome_input)
+    #print(predictor_input)
     
-    df_plot %>%
-      filter(df_plot["measure_id_char"] == outcome_input) %>%
-      filter(df_plot["predictor" == predictor_input]) %>%
-      ggplot(aes(x = measure_id_char, y = predictor_value)) + 
-      geom_boxplot() #+ 
+    df_plot <- df %>%
+       select(measure_id, med_inc, higher_ed)
+    
+    if(predictor_input == "med_inc"){
+      df_plot %>%
+        filter(df_plot["measure_id"] == outcome_input) %>%
+        ggplot(aes(x = measure_id, y = med_inc)) + 
+          geom_boxplot()
+    }
+    
+    else if(predictor_input == "higher_ed"){
+      df_plot %>%
+        filter(df_plot["measure_id"] == outcome_input) %>%
+        ggplot(aes(x = measure_id, y = higher_ed)) + 
+          geom_boxplot()
+    }
+    
+    else{
+      print("Choose an outcome and predictor")
+    }
+    
+    #df_plot <- df %>%
+     # select(measure_id, med_inc, higher_ed) %>%
+      #filter(df["measure_id"] == outcome_input) %>%
+      #gather(key = "predictor", value = "predictor_value", 2:3)
+      #print(df_plot$predictor)
+      #filter(df_plot["predictor"] == predictor_input) %>%
+      #ggplot(df_plot, aes(x = measure_id, y = predictor_value)) + 
+      #geom_boxplot() #+ 
     #labs(x = outcome_input, y = predictor_input)
-    
     #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot() 
   })
 }
