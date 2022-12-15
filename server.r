@@ -43,7 +43,7 @@ function(input, output, session) {
     
     d_circles <- d_circles %>% 
       filter(d_circles["measure_id"] == input_outcome1) #%>%
-      #filter(d_circles["state_name"] == input_state1)
+    #filter(d_circles["state_name"] == input_state1)
     
     
     # print(nrow(d_circles["measure_id_char"]))
@@ -53,15 +53,15 @@ function(input, output, session) {
       clearShapes() %>%
       addProviderTiles("CartoDB.Positron") %>%
       #setView(lng = ((max(d_circles$longitude) + 
-                        #min(d_cirlcles$longitude)) / 2),
-              #lat = ((max(d_circles$latitude) + 
-                        #min(d_cirlcles$latitude)) / 2)) %>%
+      #min(d_cirlcles$longitude)) / 2),
+      #lat = ((max(d_circles$latitude) + 
+      #min(d_cirlcles$latitude)) / 2)) %>%
       addCircles(lng = ~longitude, 
                  lat = ~latitude, 
                  stroke=FALSE, 
                  fillOpacity=0.4,
-                 )
-      
+      )
+    
   })
   
   
@@ -171,20 +171,20 @@ function(input, output, session) {
     #print(predictor_input)
     
     df_plot <- df %>%
-       select(measure_id, med_inc, higher_ed)
+      select(measure_id, med_inc, higher_ed)
     
     if(predictor_input == "med_inc"){
       df_plot %>%
         filter(df_plot["measure_id"] == outcome_input) %>%
         ggplot(aes(x = measure_id, y = med_inc)) + 
-          geom_boxplot()
+        geom_boxplot()
     }
     
     else if(predictor_input == "higher_ed"){
       df_plot %>%
         filter(df_plot["measure_id"] == outcome_input) %>%
         ggplot(aes(x = measure_id, y = higher_ed)) + 
-          geom_boxplot()
+        geom_boxplot()
     }
     
     else{
@@ -192,13 +192,13 @@ function(input, output, session) {
     }
     
     #df_plot <- df %>%
-     # select(measure_id, med_inc, higher_ed) %>%
-      #filter(df["measure_id"] == outcome_input) %>%
-      #gather(key = "predictor", value = "predictor_value", 2:3)
-      #print(df_plot$predictor)
-      #filter(df_plot["predictor"] == predictor_input) %>%
-      #ggplot(df_plot, aes(x = measure_id, y = predictor_value)) + 
-      #geom_boxplot() #+ 
+    # select(measure_id, med_inc, higher_ed) %>%
+    #filter(df["measure_id"] == outcome_input) %>%
+    #gather(key = "predictor", value = "predictor_value", 2:3)
+    #print(df_plot$predictor)
+    #filter(df_plot["predictor"] == predictor_input) %>%
+    #ggplot(df_plot, aes(x = measure_id, y = predictor_value)) + 
+    #geom_boxplot() #+ 
     #labs(x = outcome_input, y = predictor_input)
     #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot() 
   })
