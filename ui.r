@@ -2,11 +2,11 @@ library(leaflet)
 
 # Choices for drop-downs
 outcomes <- c(
-  "BpHigh" = "BpHigh",
-  "Depression" = "Depression",
-  "Diabetes" = "Diabetes",
-  "HighChol" = "HighChol",
-  "Obesity" = "Obesity"
+  "BpHigh" = "BPHIGH",
+  "Depression" = "DEPRESSION",
+  "Diabetes" = "DIABETES",
+  "HighChol" = "HIGHCHOL",
+  "Obesity" = "OBESITY"
 )
 
 states <- c(
@@ -96,7 +96,6 @@ navbarPage("US Health Outcomes", id="nav",
                         selectInput("outcome1", "Outcome", outcomes),
                         
                         leafletOutput("map"),
-                        #plotOutput("circles")
                     ),
                     
            ),
