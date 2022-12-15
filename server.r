@@ -250,16 +250,12 @@ function(input, output, session) {
         filter(df_plot["measure_id"] == outcome_input) %>%
         ggplot(aes(x = measure_id, y = med_inc)) + 
           geom_boxplot()
-    }
-    
-    else if(predictor_input == "higher_ed"){
+    } else if(predictor_input == "higher_ed"){
       df_plot %>%
         filter(df_plot["measure_id"] == outcome_input) %>%
         ggplot(aes(x = measure_id, y = higher_ed)) + 
           geom_boxplot()
-    }
-    
-    else{
+    } else{
       print("Choose an outcome and predictor")
     }
     
