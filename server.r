@@ -97,13 +97,10 @@ function(input, output, session) {
   ## TAB 2 Educational Attainment by County #########################################
   #use "input$state2" 
   
-  #reactive functions for statewide county map
-  changeState <- reactive({
-    return(input$state2)
-  })
-  
   #Output function for statewide 
   output$highschool_education <- renderLeaflet({
+    
+    selectedState <- input$state2
     
     #filtering data by educational attainment, grouping by county name
     map_df <- df %>%
@@ -125,7 +122,7 @@ function(input, output, session) {
                                                                "NAME" = "county_name"))
     
     #select state specified by user
-    statePolygon <- which(countyGeo@data$stateName != changeState())
+    statePolygon <- which(countyGeo@data$stateName != selectedState)
     stateLength <- length(statePolygon)
     counter <- 0
     
@@ -137,9 +134,9 @@ function(input, output, session) {
     counter <- 0
     
     #grab state specific values for setview
-    currentLong <- stateCoordinates$lon[stateCoordinates$state == changeState()]
-    currentLat <- stateCoordinates$lat[stateCoordinates$state == changeState()]
-    currentZoom <- stateCoordinates$zoom[stateCoordinates$state == changeState()]
+    currentLong <- stateCoordinates$lon[stateCoordinates$state == selectedState]
+    currentLat <- stateCoordinates$lat[stateCoordinates$state == selectedState]
+    currentZoom <- stateCoordinates$zoom[stateCoordinates$state == selectedState]
     
     #prepping colors for chloropleth
     pal <- colorBin("RdYlGn", domain = countyGeo@data$percent_ed)
@@ -165,13 +162,10 @@ function(input, output, session) {
   ## TAB 3 Median Income by County #########################################
   #use "input$state3" 
   
-  #reactive functions for statewide county map
-  changeState <- reactive({
-    return(input$state3)
-  })
-  
   #Output function for statewide 
   output$median_income <- renderLeaflet({
+    
+    selectedState <- input$state3
     
     #filtering data by educational attainment, grouping by county name
     map_df2 <- df %>%
@@ -193,7 +187,7 @@ function(input, output, session) {
                                                                 "NAME" = "county_name"))
     
     #select state specified by user
-    statePolygon <- which(countyGeo@data$stateName != changeState())
+    statePolygon <- which(countyGeo@data$stateName != selectedState)
     stateLength <- length(statePolygon)
     counter <- 0
     
@@ -205,9 +199,9 @@ function(input, output, session) {
     counter <- 0
     
     #grab state specific values for setview
-    currentLong <- stateCoordinates$lon[stateCoordinates$state == changeState()]
-    currentLat <- stateCoordinates$lat[stateCoordinates$state == changeState()]
-    currentZoom <- stateCoordinates$zoom[stateCoordinates$state == changeState()]
+    currentLong <- stateCoordinates$lon[stateCoordinates$state == selectedState]
+    currentLat <- stateCoordinates$lat[stateCoordinates$state == selectedState]
+    currentZoom <- stateCoordinates$zoom[stateCoordinates$state == selectedState]
     
     #prepping colors for chloropleth
     pal <- colorBin("RdYlGn", domain = countyGeo@data$avg_income)
