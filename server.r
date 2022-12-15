@@ -17,19 +17,33 @@ function(input, output, session) {
   # Create the map
   output$map <- renderLeaflet({
     leaflet("map", d_circles) %>%
-      addTiles() %>%
+      addProviderTiles("CartoDB.Positron") %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4)
   })
   
   #output$circles <- renderPlot({
   observe({
-    input <- input$outcome1
+    input_state1 <- input$state1 
+    
+    d_circles <- d_circles %>%
+      filter(d_circles["state_name"] == input_state1)
+    
+    leafletProxy("map", data = d_circles) %>%
+      addProviderTiles("CartoDB.Positron") %>%
+      setView(lng = ((max(d_circles$longitude) + 
+                        min(d_circles$longitude)) / 2),
+              lat = ((max(d_circles$latitude) + 
+                        min(d_circles$latitude)) / 2), zoom = 6)
+    
+    input_outcome1 <- input$outcome1 #%>%
+    #input_state1 <- input$state1
     
     # print(input)
     # print(nrow(d_circles["measure_id_char"]))
     
     d_circles <- d_circles %>% 
-      filter(d_circles["measure_id"] == input)
+      filter(d_circles["measure_id"] == input_outcome1) #%>%
+      #filter(d_circles["state_name"] == input_state1)
     
     
     # print(nrow(d_circles["measure_id_char"]))
@@ -37,11 +51,17 @@ function(input, output, session) {
     
     leafletProxy("map", data = d_circles) %>%
       clearShapes() %>%
-      addTiles() %>%
+      addProviderTiles("CartoDB.Positron") %>%
+      #setView(lng = ((max(d_circles$longitude) + 
+                        #min(d_cirlcles$longitude)) / 2),
+              #lat = ((max(d_circles$latitude) + 
+                        #min(d_cirlcles$latitude)) / 2)) %>%
       addCircles(lng = ~longitude, 
                  lat = ~latitude, 
                  stroke=FALSE, 
-                 fillOpacity=0.4)
+                 fillOpacity=0.4,
+                 )
+      
   })
   
   
