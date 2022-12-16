@@ -18,6 +18,10 @@ function(input, output, session) {
   output$map <- renderLeaflet({
     leaflet("map", d_circles) %>%
       addProviderTiles("CartoDB.Positron") %>%
+      addCircles(lng = ~longitude, 
+                 lat = ~latitude, 
+                 stroke=FALSE, 
+                 fillOpacity=0.4,) %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4)
   })
   
@@ -52,10 +56,6 @@ function(input, output, session) {
     leafletProxy("map", data = d_circles) %>%
       clearShapes() %>%
       addProviderTiles("CartoDB.Positron") %>%
-      #setView(lng = ((max(d_circles$longitude) + 
-      #min(d_cirlcles$longitude)) / 2),
-      #lat = ((max(d_circles$latitude) + 
-      #min(d_cirlcles$latitude)) / 2)) %>%
       addCircles(lng = ~longitude, 
                  lat = ~latitude, 
                  stroke=FALSE, 
@@ -103,14 +103,12 @@ function(input, output, session) {
   })
   
   #Output function for statewide 
-  output$highschool_ed <- renderLeaflet({
+  output$highschool_education <- renderLeaflet({
     
     #filtering data by educational attainment, grouping by county name
     map_df <- df %>%
-      gather(key = "predictor", value = "predictor_value", 5:6) %>%
-      filter(df["predictor"] == "higher_ed") %>%
       group_by(county_name, state_name) %>%
-      summarize(percent_ed = median(predictor_value), na.rm =TRUE)
+      summarize(percent_ed = median(higher_ed), na.rm =TRUE)
     
     #importing geo spatial data
     stateGeo <- geojson_read("states.geo.json", what = "sp")
@@ -148,8 +146,17 @@ function(input, output, session) {
     
     #create leaflet visualization
     leaflet(countyGeo) %>%
-      addPolygons(fillColor = ~pal(percent_ed)) %>%
-      setView(currentLong, currentLat, currentZoom) 
+      addPolygons(fillColor = ~pal(percent_ed),
+                  weight = 1,
+                  color = "white",
+                  highlightOptions = highlightOptions(weight = 5),
+                  label= ~percent_ed,
+                  fillOpacity = 0.7) %>%
+      
+      setView(currentLong, currentLat, currentZoom) %>%
+      
+      addLegend("bottomright", pal = pal, values = ~percent_ed, title = "Percent 25 and Older with a Highschool Diploma/GED", 
+                opacity = .7)
     
     
   })
@@ -157,6 +164,71 @@ function(input, output, session) {
   
   ## TAB 3 Median Income by County #########################################
   #use "input$state3" 
+  
+  #reactive functions for statewide county map
+  changeState <- reactive({
+    return(input$state3)
+  })
+  
+  #Output function for statewide 
+  output$median_income <- renderLeaflet({
+    
+    #filtering data by educational attainment, grouping by county name
+    map_df2 <- df %>%
+      group_by(county_name, state_name) %>%
+      summarize(avg_income = median(med_inc), na.rm =TRUE)
+    
+    #importing geo spatial data
+    stateGeo <- geojson_read("states.geo.json", what = "sp")
+    
+    countyGeo <- geojson_read("counties.json", what = "sp")
+    
+    #adding state names to the counties table 
+    stateNames <- as.character(stateGeo@data$NAME)
+    names(stateNames) <- as.character(stateGeo@data$STATE)
+    countyGeo@data$stateName <- stateNames[as.character(countyGeo@data$STATE)]
+    
+    #joining df with json data
+    countyGeo@data <- left_join(countyGeo@data, map_df2, by = c("stateName" = "state_name",
+                                                                "NAME" = "county_name"))
+    
+    #select state specified by user
+    statePolygon <- which(countyGeo@data$stateName != changeState())
+    stateLength <- length(statePolygon)
+    counter <- 0
+    
+    #filter out polygons of other states
+    for (i in 1:stateLength){
+      countyGeo@polygons[[statePolygon[i]-counter]] <- NULL
+      counter <- counter + 1
+    }
+    counter <- 0
+    
+    #grab state specific values for setview
+    currentLong <- stateCoordinates$lon[stateCoordinates$state == changeState()]
+    currentLat <- stateCoordinates$lat[stateCoordinates$state == changeState()]
+    currentZoom <- stateCoordinates$zoom[stateCoordinates$state == changeState()]
+    
+    #prepping colors for chloropleth
+    pal <- colorBin("RdYlGn", domain = countyGeo@data$avg_income)
+    
+    #create leaflet visualization
+    leaflet(countyGeo) %>%
+      addPolygons(fillColor = ~pal(avg_income),
+                  weight = 1,
+                  color = "white",
+                  highlightOptions = highlightOptions(weight = 5),
+                  label= ~avg_income,
+                  fillOpacity = 0.7) %>%
+      setView(currentLong, currentLat, currentZoom) %>%
+      addLegend("bottomright", pal = pal, values = ~avg_income, title = "Median Income", 
+                opacity = .7)
+    
+    
+    
+    
+  })
+  
   
   
   ## TAB 4 Data Explorer ###########################################
@@ -178,16 +250,12 @@ function(input, output, session) {
         filter(df_plot["measure_id"] == outcome_input) %>%
         ggplot(aes(x = measure_id, y = med_inc)) + 
         geom_boxplot()
-    }
-    
-    else if(predictor_input == "higher_ed"){
+    } else if(predictor_input == "higher_ed"){
       df_plot %>%
         filter(df_plot["measure_id"] == outcome_input) %>%
         ggplot(aes(x = measure_id, y = higher_ed)) + 
         geom_boxplot()
-    }
-    
-    else{
+    } else{
       print("Choose an outcome and predictor")
     }
     
