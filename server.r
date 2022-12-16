@@ -37,7 +37,7 @@ function(input, output, session) {
     input_outcome1 <- input$outcome1 
     
     d_circles <- d_circles %>% 
-      filter(d_circles["measure_id"] == input_outcome1) #%>%
+      filter(d_circles["measure_id"] == input_outcome1)
     
     
     leafletProxy("map", data = d_circles) %>%
