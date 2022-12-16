@@ -223,7 +223,7 @@ function(input, output, session) {
   
   
   
-  ## TAB 4 Data Explorer ###########################################
+  ## TAB 4 Demographics vs. Outcomes ###########################################
   # use "input$outcome4" and "input$predictor4"
   # Click the health outcome and display a graph showing counts of each outcome in each state.
   
@@ -231,8 +231,6 @@ function(input, output, session) {
   output$plot4 <- renderPlot({ # different outcomes by predictor 
     outcome_input <- input$outcome4
     predictor_input <- input$predictor4
-    #print(outcome_input)
-    #print(predictor_input)
     
     df_plot <- df %>%
       select(measure_id, med_inc, higher_ed)
@@ -251,15 +249,5 @@ function(input, output, session) {
       print("Choose an outcome and predictor")
     }
     
-    #df_plot <- df %>%
-    # select(measure_id, med_inc, higher_ed) %>%
-    #filter(df["measure_id"] == outcome_input) %>%
-    #gather(key = "predictor", value = "predictor_value", 2:3)
-    #print(df_plot$predictor)
-    #filter(df_plot["predictor"] == predictor_input) %>%
-    #ggplot(df_plot, aes(x = measure_id, y = predictor_value)) + 
-    #geom_boxplot() #+ 
-    #labs(x = outcome_input, y = predictor_input)
-    #ggplot(df_plot, aes(x = measure_id_char, y = med_inc)) + geom_boxplot() 
   })
 }
