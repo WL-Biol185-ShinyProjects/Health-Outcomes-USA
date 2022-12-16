@@ -75,18 +75,17 @@ navbarPage("US Health Outcomes", id="nav",
                     tags$h2("Welcome to the US Health Outcomes Explorer!"),
                     
                     tags$h4("This health outcomes explorer provides an interactive visualization of health data
-                            for thirteen different health outcomes and six socioeconomic predictors."),
+                            for five different health outcomes and two socioeconomic predictors."),
                     
                     tags$h5("Health data provided by Centers for Disease Control and Prevention, 
                     National Center for Chronic Disease Prevention and Health Promotion, 
                     Division of Population Health, from the PLACES: Local Data for Better Health, 
                             Census Tract Data 2022 release."),
                     
+                    tags$h5("Socioeconomic predictor data provided by the National Historical Geographic Information System, 2018 data."),
+
                     tags$a(href = "https://chronicdata.cdc.gov/d/cwsq-ngmh?category=500-Cities-Places&view_name=PLACES-Local-Data-for-Better-Health-Census-Tract-D", 
-                           "Link to CDC data"),
-                    tags$h5("Socioeconomic predictor data provided by  *****."),
-                    tags$a(href = "https://chronicdata.cdc.gov/d/cwsq-ngmh?category=500-Cities-Places&view_name=PLACES-Local-Data-for-Better-Health-Census-Tract-D", 
-                           "Link to NH GIS data")
+                           "Link to CDC data")
                     
            ),
            
