@@ -92,7 +92,6 @@ navbarPage("US Health Outcomes", id="nav",
            
            tabPanel("Health Outcomes by State", #Tab 1
                     div(class="outer",
-                        tags$h2("Click a circle to see more!"),
                         
                         selectInput("state1", "State", states),
                         selectInput("outcome1", "Outcome", outcomes),

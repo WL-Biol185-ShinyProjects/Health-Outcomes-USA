@@ -20,8 +20,7 @@ function(input, output, session) {
       addProviderTiles("CartoDB.Positron") %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4)
   })
-  
-  #output$circles <- renderPlot({
+
   observe({
     input_state1 <- input$state1 
     
@@ -35,19 +34,11 @@ function(input, output, session) {
               lat = ((max(d_circles$latitude) + 
                         min(d_circles$latitude)) / 2), zoom = 6)
     
-    input_outcome1 <- input$outcome1 #%>%
-    #input_state1 <- input$state1
-    
-    # print(input)
-    # print(nrow(d_circles["measure_id_char"]))
+    input_outcome1 <- input$outcome1 
     
     d_circles <- d_circles %>% 
       filter(d_circles["measure_id"] == input_outcome1) #%>%
-    #filter(d_circles["state_name"] == input_state1)
     
-    
-    # print(nrow(d_circles["measure_id_char"]))
-    # print(d_circles[1:10, "measure_id_char"])
     
     leafletProxy("map", data = d_circles) %>%
       clearShapes() %>%
@@ -58,37 +49,6 @@ function(input, output, session) {
                  fillOpacity=0.4,
       )
     
-  })
-  
-  
-  showOutcomePopup <- function(latitude, longitude, 
-                               county_name = df$county_name, 
-                               tot_pop = df$tot_pop) {
-    input <- input$outcome1
-    d_popup <- df %>% 
-      filter(df["measure_id"] == input)
-    
-    #content <- paste("(", latitude, ",", longitude, "),", ) - works with this tag
-    
-    content <- as.character(tagList(
-      tags$h4("County: ", county_name),
-      tags$h4("County Population: ", tot_pop),
-      sprintf("")
-    ))
-    
-    leafletProxy("map", data = d_popup) %>%
-      addPopups(longitude, latitude, content)
-  }
-  
-  observeEvent(input$map_shape_click, {
-    
-    click <- input$map_shape_click
-    if(is.null(click)){
-      return()
-    }
-    isolate({
-      showOutcomePopup(click$lat, click$lng)
-    })
   })
   
   
