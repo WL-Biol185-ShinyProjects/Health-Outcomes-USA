@@ -14,14 +14,10 @@ function(input, output, session) {
   ## TAB 1 Interactive US Map ###########################################
   # use "input$outcome1"
   
-  # Create the map
+  
   output$map <- renderLeaflet({
     leaflet("map", d_circles) %>%
       addProviderTiles("CartoDB.Positron") %>%
-      addCircles(lng = ~longitude, 
-                 lat = ~latitude, 
-                 stroke=FALSE, 
-                 fillOpacity=0.4,) %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4)
   })
   
@@ -65,7 +61,9 @@ function(input, output, session) {
   })
   
   
-  showOutcomePopup <- function(latitude, longitude) {
+  showOutcomePopup <- function(latitude, longitude, 
+                               county_name = df$county_name, 
+                               tot_pop = df$tot_pop) {
     input <- input$outcome1
     d_popup <- df %>% 
       filter(df["measure_id"] == input)
@@ -73,9 +71,9 @@ function(input, output, session) {
     #content <- paste("(", latitude, ",", longitude, "),", ) - works with this tag
     
     content <- as.character(tagList(
-      tags$h4("(", latitude, ",", longitude, ")"), # want tags that will display the "data_value" (percent)
-      tags$br(),
-      sprintf("map")
+      tags$h4("County: ", county_name),
+      tags$h4("County Population: ", tot_pop),
+      sprintf("")
     ))
     
     leafletProxy("map", data = d_popup) %>%
